@@ -1,0 +1,10 @@
+{
+  "id": {"_id": "5fec8621563cce029c1997ba"},
+  "mongodbUrl": "mongodb://localhost:27017/mestodb",
+  "secretKey": "hello world",
+  "PORT": 3000,
+  "badRequest": 400,
+  "unAuthorized": 401,
+  "doNotFind": 404,
+  "default": 500
+}
