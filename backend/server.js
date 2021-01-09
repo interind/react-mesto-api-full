@@ -23,5 +23,5 @@ async function start() {
     process.exitCode = 1;
   }
 }
-console.log(process.env.NODE_ENV);
+
 start();
