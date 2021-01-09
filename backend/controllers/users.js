@@ -8,7 +8,7 @@ const User = require('../models/user');
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
-  return User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password, next)
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
@@ -19,7 +19,10 @@ module.exports.login = (req, res, next) => {
       );
       res.send({ token, _id: user._id });
     })
-    .catch((err) => next(createError(config.get('unAuthorized'), err.message)));
+    .catch((err) => {
+      console.log(err);
+      next(createError(config.get('unAuthorized'), err.message));
+    });
 };
 
 module.exports.getUsers = (req, res, next) => {
@@ -40,7 +43,7 @@ module.exports.getUser = (req, res, next) => {
       if (err.name === 'CastError') {
         return next(createError(config.get('badRequest'), 'Ошибка id пользователя!❌'));
       }
-      return next(createError(config.get('default'), err.message));
+      return next(err);
     });
 };
 
@@ -65,7 +68,7 @@ module.exports.createUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(createError(config.get('badRequest'), err.message));
       }
-      return next(createError(config.get('default'), err.message));
+      return next(err);
     });
 };
 
@@ -85,7 +88,7 @@ module.exports.updateUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(createError(config.get('badRequest'), err.message));
       }
-      return next(createError(config.get('default'), err.message));
+      return next(err);
     });
 };
 
@@ -105,6 +108,6 @@ module.exports.updateUserAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(createError(config.get('badRequest'), err.message));
       }
-      return next(createError(config.get('default'), err.message));
+      return next(err);
     });
 };

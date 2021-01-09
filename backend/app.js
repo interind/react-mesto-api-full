@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger.js');
+const { errorsResponse } = require('./controllers/errors.js');
 const routerAuth = require('./routes/auth.js');
 const routerUsers = require('./routes/users.js');
 const routerCards = require('./routes/cards.js');
@@ -37,12 +37,6 @@ app.use(routerError);
 
 app.use(errorLogger); // log ошибок
 app.use(errors()); // ошибки celebrate
-app.use((error, req, res, next) => {
-  res.status(error.status || config.get('default')).send({
-    status: error.status,
-    message: error.message,
-  });
-  next();
-});
+app.use(errorsResponse);
 
 module.exports = app;

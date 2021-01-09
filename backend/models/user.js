@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const createError = require('http-errors');
+const config = require('config');
 const isEmail = require('validator/lib/isEmail');
 const { regHttp } = require('../utils/reg.ext.js');
 
@@ -45,21 +47,22 @@ const userSchema = new mongoose.Schema({
 });
 
 // eslint-disable-next-line func-names
-userSchema.statics.findUserByCredentials = function (email, password) {
+userSchema.statics.findUserByCredentials = function (email, password, next) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
+        return next(createError(config.get('unAuthorized'), 'Неправильные почта или пароль'));
       }
 
-      return bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          return Promise.reject(new Error('Неправильные почта или пароль'));
-        }
-        return user;
-      });
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return next(createError(config.get('unAuthorized'), 'Неправильные почта или пароль'));
+          }
+          return user;
+        });
     })
-    .catch((err) => new Error(err));
+    .catch(next);
 };
 
 module.exports = mongoose.model('user', userSchema);
