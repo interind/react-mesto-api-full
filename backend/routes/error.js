@@ -1,9 +1,8 @@
 const router = require('express').Router();
 const config = require('config');
-const createError = require('http-errors');
 
-router.get('*', (req, res, next) => next(
-  createError(config.get('doNotFind'), 'Запрашиваемый ресурс не найден'),
-));
+router.get('*', (req, res) => {
+  res.status(config.get('NotFound')).send({ message: 'Запрашиваемый ресурс не найден' });
+});
 
 module.exports = router;

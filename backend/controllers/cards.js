@@ -1,4 +1,3 @@
-const config = require('config');
 const createError = require('http-errors');
 const Card = require('../models/card');
 
@@ -6,7 +5,7 @@ module.exports.getCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
     .then((cards) => res.send({ data: cards }))
-    .catch((err) => next(createError(config.get('default'), err.message)));
+    .catch(next);
 };
 
 module.exports.createCard = (req, res, next) => {
@@ -22,12 +21,7 @@ module.exports.createCard = (req, res, next) => {
     owner,
   })
     .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(createError(config.get('default'), err.message));
-    });
+    .catch(next);
 };
 
 module.exports.deleteCard = (req, res, next) => {
@@ -36,14 +30,10 @@ module.exports.deleteCard = (req, res, next) => {
       if (card) {
         return res.send({ message: 'карточка удалена' });
       }
-      throw createError(config.get('doNotFind'), 'такой карточки нет');
+      next(new createError.NotFound('такой карточки нет'));
+      return false;
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(createError(config.get('default'), err.message));
-    });
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {
@@ -56,14 +46,10 @@ module.exports.likeCard = (req, res, next) => {
       if (card) {
         return res.send({ data: card });
       }
-      throw createError(config.get('doNotFind'), 'такой карточки нет');
+      next(new createError.NotFound('такой карточки нет'));
+      return false;
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(createError(config.get('default'), err.message));
-    });
+    .catch(next);
 };
 
 module.exports.dislikeCard = (req, res, next) => {
@@ -76,12 +62,8 @@ module.exports.dislikeCard = (req, res, next) => {
       if (card) {
         return res.send({ data: card });
       }
-      throw createError(config.get('doNotFind'), 'такой карточки нет');
+      next(new createError.NotFound('такой карточки нет'));
+      return false;
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(createError(config.get('default'), err.message));
-    });
+    .catch(next);
 };

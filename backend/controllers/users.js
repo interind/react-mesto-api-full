@@ -19,10 +19,7 @@ module.exports.login = (req, res, next) => {
       );
       res.send({ token, _id: user._id });
     })
-    .catch((err) => {
-      console.log(err);
-      next(createError(config.get('unAuthorized'), err.message));
-    });
+    .catch(next);
 };
 
 module.exports.getUsers = (req, res, next) => {
@@ -34,17 +31,13 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
-      if (user) {
-        return res.send({ data: user });
+      if (!user) {
+        next(new createError.NotFound('Такого пользователя нет!❌'));
+        return false;
       }
-      throw createError(config.get('doNotFind'), 'Такого пользователя нет!❌');
+      return res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(createError(config.get('badRequest'), 'Ошибка id пользователя!❌'));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -64,12 +57,7 @@ module.exports.createUser = (req, res, next) => {
     password: hash,
   }))
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -84,12 +72,7 @@ module.exports.updateUser = (req, res, next) => {
     },
   )
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 module.exports.updateUserAvatar = (req, res, next) => {
@@ -104,10 +87,5 @@ module.exports.updateUserAvatar = (req, res, next) => {
     },
   )
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(createError(config.get('badRequest'), err.message));
-      }
-      return next(err);
-    });
+    .catch(next);
 };

@@ -17,9 +17,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : config.get('secretKey'));
   } catch (err) {
-    return res
-      .status(config.get('unAuthorized'))
-      .send({ message: 'Ошибка авторизации' });
+    return next(err);
   }
 
   req.user = payload; // записываем пейлоуд в объект запроса

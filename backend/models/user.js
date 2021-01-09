@@ -10,19 +10,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Alexander',
+    default: config.get('userName'),
     required: true,
   },
   about: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Student',
+    default: config.get('userAbout'),
     required: true,
   },
   avatar: {
     type: String,
-    default: 'https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1100&q=80',
+    default: config.get('avatar'),
     required: true,
     validate: {
       validator: (v) => regHttp.test(v),
@@ -51,16 +51,19 @@ userSchema.statics.findUserByCredentials = function (email, password, next) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return next(createError(config.get('unAuthorized'), 'Неправильные почта или пароль'));
+        next(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
+        return false;
       }
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return next(createError(config.get('unAuthorized'), 'Неправильные почта или пароль'));
+            return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
           }
+          console.log(user);
           return user;
-        });
+        })
+        .catch(next);
     })
     .catch(next);
 };
