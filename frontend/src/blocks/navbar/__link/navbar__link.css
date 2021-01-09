@@ -1,0 +1,10 @@
+.navbar__link {
+  color: #fff;
+  text-decoration: none;
+  opacity: 1;
+}
+
+.navbar__link:hover {
+  cursor: pointer;
+  opacity: .8;
+}

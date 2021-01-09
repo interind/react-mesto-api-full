@@ -1,0 +1,42 @@
+.header__button-menu[type='checkbox'] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+
+
+@media screen and (max-width: 450px) {
+  .header__button-menu {
+    opacity: 1;
+  }
+
+  .header__button-menu:hover {
+    opacity: .3;
+  }
+
+  .header__button-menu[id='span'] {
+    position: absolute;
+    overflow: visible;
+    width: 30px;
+    height: 30px;
+    right: 20px;
+    top: 0;
+    opacity: 1;
+    background-image: url('../../../images/navbar/iconMenu.svg');
+    background-color: initial;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .header__button-menu[type='checkbox']:checked + .header__button-menu[id='span'] {
+    background-image: url('../../../images/Close-Icon.svg');
+    border: none;
+  }
+
+}
