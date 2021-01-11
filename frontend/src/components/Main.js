@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card.js';
 import Profile from './Profile';
+import '../index.css';
 
 Main.propTypes = {
   cards: PropTypes.array,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import * as auth from '../utils/auth.js';
 import api from '../utils/api.js';
 import Main from './Main.js';
 import Login from './Login';
@@ -36,6 +35,7 @@ function App() {
     about: '',
     _id: '',
     avatar: '',
+    email: '',
   }); // тут информация обо мне с сервера
   const [cards, setCards] = React.useState([]); // тут информация о карточках
   const [loading, setLoading] = React.useState(false); // лоадер при загрузке страницы
@@ -53,12 +53,12 @@ function App() {
   const [buttonLoading, setButtonLoading] = React.useState(false); // Лоадер для кнопки сохранить.
   const [userAuthInfo, setUserAuthInfo] = React.useState({
     link: '/sign-up',
-    email: '',
+    info: '',
   });
 
   function onLogin(emailAndPassword, evt) {
     setButtonLoading(true);
-    auth
+    api
       .authorizationPost({
         ...emailAndPassword,
       })
@@ -85,7 +85,7 @@ function App() {
 
   function onRegister(password, email) {
     setButtonLoading(true);
-    auth
+    api
       .register(password, email)
       .then((res) => {
         if (res.data) {
@@ -125,7 +125,7 @@ function App() {
       if (localStorage.getItem('jwt')) {
         localStorage.removeItem('jwt');
         localStorage.removeItem('email');
-        setUserAuthInfo({ ...userAuthInfo, email: '' });
+        setCurrentUser({ ...currentUser, email: '' });
         handleLogOut(evt);
         history.push('/sign-in');
       } else {
@@ -135,7 +135,7 @@ function App() {
       }
     } else if (evt.target.text === 'Регистрация') {
       history.push('/sign-up');
-      setUserAuthInfo({ ...userAuthInfo, link: '/sign-in'});
+      setUserAuthInfo({ ...userAuthInfo, link: '/sign-in' });
     } else if (evt.target.text === 'Вход') {
       history.push('/sign-in');
       setUserAuthInfo({ ...userAuthInfo, link: '/sign-up' });
@@ -250,9 +250,9 @@ function App() {
     setOpenCard(true);
   }
 
-  function handleCardLike({ likes, _id }) {
+  function handleCardLike({likes, _id}) {
     // получаем лайки с сервера
-    const isLiked = likes.some((i) => i._id === currentUser._id);
+    const isLiked = likes.some((i) => i === currentUser._id);
 
     api
       .changeLikeCardStatus(_id, !isLiked)
@@ -298,50 +298,66 @@ function App() {
     }
   }
 
-  React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      const token = localStorage.getItem('jwt');
+  // React.useEffect(() => {
+  //   if (localStorage.getItem('jwt')) {
+  //     const token = localStorage.getItem('jwt');
 
-      if (token) {
-        auth.getContent(token).then((res) => {
-          try {
-            if (res) {
-              setUserAuthInfo({
-                info: '',
-                link: '/sign-up',
-                email: res.data.email,
-              });
-              localStorage.setItem('email', res.data.email);
-              setLoggedIn(true);
-            }
-          } catch (e) {
-            return new Error(e);
+  //     if (token) {
+  //       auth.getContent(token).then((res) => {
+  //         try {
+  //           if (res) {
+  //             setUserAuthInfo({
+  //               info: '',
+  //               link: '/sign-up',
+  //               email: res.data.email,
+  //             });
+  //             localStorage.setItem('email', res.data.email);
+  //             setLoggedIn(true);
+  //           }
+  //         } catch (e) {
+  //           return new Error(e);
+  //         }
+  //       });
+  //     } else {
+  //       localStorage.removeItem('jwt');
+  //     }
+  //   } else {
+  //     localStorage.clear();
+  //   }
+  // }, [loggedIn]);
+
+  React.useEffect(() => {
+    setLoggedIn(false);
+    setLoading(true);
+    if (localStorage.getItem('jwt')) {
+      api.token = localStorage.getItem('jwt');
+      Promise.all([api.getInfoForUser(), api.getInfoForCards()])
+        .then(([dataUser, dataCards]) => {
+          if (dataUser.message || dataCards.message) {
+            return new Error(dataUser.message || dataCards.message);
           }
+          setCurrentUser(dataUser);
+          setCards(dataCards);
+          setLoggedIn(true);
+          setUserAuthInfo({
+            info: '',
+            link: '/sign-up',
+          });
+          setIsOk(true);
+        })
+        .catch((err) => {
+          console.error('Информация сервера с ошибкой', err.message);
+          setError(err);
+          setIsOk(false);
+          localStorage.removeItem('jwt');
+        })
+        .finally(() => {
+          setLoading(false);
         });
-      } else {
-        localStorage.removeItem('jwt');
-      }
     } else {
       localStorage.clear();
+      setLoading(false);
     }
-  }, [loggedIn]);
-
-  React.useEffect(() => {
-    setLoading(true);
-    Promise.all([api.getInfoForUser(), api.getInfoForCards()])
-      .then(([dataUser, dataCards]) => {
-        setCurrentUser(dataUser);
-        setCards(dataCards);
-        setIsOk(true);
-      })
-      .catch((err) => {
-        console.error('Информация сервера с ошибкой', err.message);
-        setError(err);
-        setIsOk(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   }, []);
 
   return (
@@ -354,14 +370,12 @@ function App() {
               <Navbar
                 selectorPlace={'page'}
                 link={userAuthInfo.link}
-                email={userAuthInfo.email}
                 signOut={signOut}
               />
             )}
             <Header
               selectorPlace={'header'}
               link={userAuthInfo.link}
-              email={userAuthInfo.email}
               isNavbarOpen={isNavbarOpen}
               signOut={signOut}
               toggleNavbar={toggleNavbar}
@@ -374,54 +388,52 @@ function App() {
             <Switch>
               <ProtectedRoute exact path='/' loggedIn={loggedIn}>
                 {loading && <Loader />}
-                {statusOk & !loading && (
-                  <React.Fragment>
-                    <Main
-                      cards={cards}
-                      handleCardLike={handleCardLike}
-                      onAddPlace={handleAddPlaceClick}
-                      handleCardClick={handleCardClick}
-                      onEditAvatar={handleEditAvatarClick}
-                      onEditProfile={handleEditProfileClick}
-                      handleCardDelete={handleConfirmDeleteClick}
-                    />
-                    <AddPlacePopup
-                      isOpen={isAddPlacePopupOpen}
-                      isLoadingButton={buttonLoading}
-                      onClose={closeAllPopups}
-                      onAddPlace={handleAddPlace}
-                      toggleEventListenerWindow={toggleEventListenerWindow}
-                    />
-                    <EditAvatarPopup
-                      isOpen={isEditAvatarPopupOpen}
-                      isLoadingButton={buttonLoading}
-                      onClose={closeAllPopups}
-                      onUpdateAvatar={handleUpdateAvatar}
-                      toggleEventListenerWindow={toggleEventListenerWindow}
-                    />
-                    <EditProfilePopup
-                      isOpen={isEditProfilePopupOpen}
-                      isLoadingButton={buttonLoading}
-                      onClose={closeAllPopups}
-                      onUpdateUser={handleUpdateUser}
-                      toggleEventListenerWindow={toggleEventListenerWindow}
-                    />
-                    <DeleteCardPopup
-                      isCard={isCard}
-                      isLoadingButton={buttonLoading}
-                      isOpen={isConfirmDeletePopupOpen}
-                      onClose={closeAllPopups}
-                      onDeleteCard={handleCardDelete}
-                      toggleEventListenerWindow={toggleEventListenerWindow}
-                    />
-                    <ImagePopup
-                      isOpen={isOpenCard}
-                      selectedCard={selectedCard}
-                      onClose={closeAllPopups}
-                      toggleEventListenerWindow={toggleEventListenerWindow}
-                    />
-                  </React.Fragment>
-                )}
+                <React.Fragment>
+                  <Main
+                    cards={cards}
+                    handleCardLike={handleCardLike}
+                    onAddPlace={handleAddPlaceClick}
+                    handleCardClick={handleCardClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onEditProfile={handleEditProfileClick}
+                    handleCardDelete={handleConfirmDeleteClick}
+                  />
+                  <AddPlacePopup
+                    isOpen={isAddPlacePopupOpen}
+                    isLoadingButton={buttonLoading}
+                    onClose={closeAllPopups}
+                    onAddPlace={handleAddPlace}
+                    toggleEventListenerWindow={toggleEventListenerWindow}
+                  />
+                  <EditAvatarPopup
+                    isOpen={isEditAvatarPopupOpen}
+                    isLoadingButton={buttonLoading}
+                    onClose={closeAllPopups}
+                    onUpdateAvatar={handleUpdateAvatar}
+                    toggleEventListenerWindow={toggleEventListenerWindow}
+                  />
+                  <EditProfilePopup
+                    isOpen={isEditProfilePopupOpen}
+                    isLoadingButton={buttonLoading}
+                    onClose={closeAllPopups}
+                    onUpdateUser={handleUpdateUser}
+                    toggleEventListenerWindow={toggleEventListenerWindow}
+                  />
+                  <DeleteCardPopup
+                    isCard={isCard}
+                    isLoadingButton={buttonLoading}
+                    isOpen={isConfirmDeletePopupOpen}
+                    onClose={closeAllPopups}
+                    onDeleteCard={handleCardDelete}
+                    toggleEventListenerWindow={toggleEventListenerWindow}
+                  />
+                  <ImagePopup
+                    isOpen={isOpenCard}
+                    selectedCard={selectedCard}
+                    onClose={closeAllPopups}
+                    toggleEventListenerWindow={toggleEventListenerWindow}
+                  />
+                </React.Fragment>
                 {!statusOk && <ErrorPage error={statusError} />}
               </ProtectedRoute>
               {!loading && (

@@ -1,30 +1,55 @@
 class Api {
-  constructor({ url, token, user, cards }) {
+  constructor({ url, login, user, cards, auth, token }) {
     this._url = url;
-    this._token = token;
     this._user = user;
     this._cards = cards;
+    this.login = login;
+    this.auth = auth;
+    this.token = '';
   }
 
   _getResponse(res) {
-    return res.ok
+    return res.status === '200' || '400' || '401'
       ? res.json()
       : Promise.reject(new Error(`Ошибка api: ${res.status}`));
   }
 
-  getInfoForUser() {
-    return fetch(`${this._url}${this._user}`, {
+  register(password, email) { // регистрация
+    return fetch(`${this._url}${this.auth}`, {
+      method: 'POST',
       headers: {
-        authorization: `${this._token}`,
         'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({ password, email }),
+    })
+      .then(this._getResponse)
+ }
+
+  authorizationPost ({ password, email }) { // получение токена
+    return fetch(`${this._url}${this.login}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({ password, email }),
+    }).then(this._getResponse);
+ }
+
+  getInfoForUser () {
+    return fetch(`${this._url}${this._user}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${this.token}`,
       },
     }).then(this._getResponse);
   }
 
   getInfoForCards() {
     return fetch(`${this._url}${this._cards}`, {
+      method: 'GET',
       headers: {
-        authorization: `${this._token}`,
+        'Authorization': `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(this._getResponse);
@@ -34,7 +59,7 @@ class Api {
     return fetch(`${this._url}${this._user}`, {
       method: 'PATCH',
       headers: {
-        authorization: `${this._token}`,
+        'Authorization': `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
@@ -48,7 +73,7 @@ class Api {
     return fetch(`${this._url}${this._user}/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: `${this._token}`,
+        'Authorization': `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
@@ -61,7 +86,7 @@ class Api {
     return fetch(`${this._url}${this._cards}`, {
       method: 'POST',
       headers: {
-        authorization: `${this._token}`,
+        'Authorization': `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
@@ -73,12 +98,12 @@ class Api {
 
   changeLikeCardStatus(infoId, isLike) {
     const toggleMethod = isLike ? 'PUT' : 'DELETE';
-    return fetch(`${this._url}${this._cards}/likes/${infoId}`, {
+    return fetch(`${this._url}${this._cards}/${infoId}/likes`, {
       method: toggleMethod,
 
       headers: {
-        authorization: `${this._token}`,
-        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${this.token}`,
+        "Content-type": "application/json; charset=UTF-8",
       },
     }).then(this._getResponse);
   }
@@ -87,7 +112,7 @@ class Api {
     return fetch(`${this._url}${this._cards}/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: `${this._token}`,
+        'Authorization': `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(this._getResponse);
@@ -95,10 +120,11 @@ class Api {
 }
 
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-16/',
-  token: 'bba27b67-a97d-4fd9-b42d-01c5b1258337',
+  url: '/',
   user: 'users/me',
   cards: 'cards',
+  login: 'signin',
+  auth: 'signup',
 });
 
 export default api;

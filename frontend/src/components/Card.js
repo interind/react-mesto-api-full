@@ -21,12 +21,14 @@ function Card({ card, onCardClick, onCardDelete, onCardLike }) {
           />
           <button
             className={`element__button-trash ${
-              card.owner &&
-              (card.owner._id === _id ? 'element__button-trash_visible' : '')
+              card.owner === _id
+                ? 'element__button-trash_visible'
+                : ''
             }`}
             type='button'
             title='кнопка удаления карточки'
-            onClick={() => onCardDelete(card)}></button>
+            onClick={() => onCardDelete(card)}
+          ></button>
           <div className='element__info'>
             <h2 className='element__title' title={card.name}>
               {card.name}
@@ -35,18 +37,18 @@ function Card({ card, onCardClick, onCardDelete, onCardLike }) {
               <div className='element__like'>
                 <button
                   className={`element__button-like element__button-like_color_white ${
-                    card.likes.find((id) => id._id === _id)
+                    card.likes.find((id) => id === _id)
                       ? 'element__button-like_color_black'
                       : ''
                   }`}
                   type='button'
                   title='кнопка для лайков'
-                  onClick={() => onCardLike(card)}></button>
+                  onClick={() => onCardLike(card)}
+                ></button>
                 <span
                   className='element__counter-like'
-                  title={card.likes.map(
-                    (like, index) => index + 1 + '🖤' + like.name
-                  )}>
+                  title={card.likes.map((index) => index + 1 + '🖤')}
+                >
                   {card.likes.length}
                 </span>
               </div>

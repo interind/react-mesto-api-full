@@ -2,11 +2,11 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classes from 'classnames';
 import PropTypes from 'prop-types';
+import { CurrentUserContext } from "../context/CurrentUserContext.js";
 
 Navbar.propTypes = {
   info: PropTypes.string,
   link: PropTypes.string,
-  email: PropTypes.string,
   signOut: PropTypes.func,
   selectorPlace: PropTypes.string,
 };
@@ -15,11 +15,11 @@ Navbar.defaultProps = {
   selectorPlace: '',
   info: '',
   link: '',
-  email: '',
 };
 
-function Navbar({ email, info, link, signOut, selectorPlace }) {
+function Navbar({ info, link, signOut, selectorPlace }) {
   const history = useHistory();
+  const { email } = React.useContext(CurrentUserContext);
 
   const title = classes({
     'Вход': history.location.pathname === '/sign-up',

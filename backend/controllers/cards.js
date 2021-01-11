@@ -3,8 +3,7 @@ const Card = require('../models/card');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.send(cards.reverse()))
     .catch(next);
 };
 
@@ -20,18 +19,18 @@ module.exports.createCard = (req, res, next) => {
     link,
     owner,
   })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
     .then((card) => {
-      if (card) {
-        return res.send({ message: 'карточка удалена' });
+      if ((!card || card.owner.toString() !== req.user._id)) {
+        return Promise.reject(new createError.NotFound('такой карточки нет'));
       }
-      next(new createError.NotFound('такой карточки нет'));
-      return false;
+      card.remove();
+      return res.send({ message: 'карточка удалена' });
     })
     .catch(next);
 };
@@ -44,10 +43,9 @@ module.exports.likeCard = (req, res, next) => {
   )
     .then((card) => {
       if (card) {
-        return res.send({ data: card });
+        return res.send(card);
       }
-      next(new createError.NotFound('такой карточки нет'));
-      return false;
+      return Promise.reject(new createError.NotFound('такой карточки нет'));
     })
     .catch(next);
 };
@@ -60,10 +58,9 @@ module.exports.dislikeCard = (req, res, next) => {
   )
     .then((card) => {
       if (card) {
-        return res.send({ data: card });
+        return res.send(card);
       }
-      next(new createError.NotFound('такой карточки нет'));
-      return false;
+      return Promise.reject(new createError.NotFound('такой карточки нет'));
     })
     .catch(next);
 };

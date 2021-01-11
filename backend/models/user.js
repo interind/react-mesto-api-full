@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
@@ -46,13 +47,11 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password, next) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        next(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
-        return false;
+        return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
       }
 
       return bcrypt.compare(password, user.password)
@@ -60,7 +59,6 @@ userSchema.statics.findUserByCredentials = function (email, password, next) {
           if (!matched) {
             return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
           }
-          console.log(user);
           return user;
         })
         .catch(next);

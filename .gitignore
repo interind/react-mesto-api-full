@@ -42,6 +42,7 @@
 */.DS_Store
 */.idea
 */.vscode
+
 */*.test.js
 */__tests__
 

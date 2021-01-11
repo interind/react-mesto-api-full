@@ -16,7 +16,7 @@ function Login({
   signOut,
   isLoadingButton,
 }) {
-  const localEmail = localStorage.getItem('email');
+  const localEmail = localStorage.getItem('email') ? localStorage.getItem('email') : '';
   const [activeButton, setActiveButton] = React.useState(true);
   const [emailAndPassword, setEmailAndPassword] = React.useState({
     email: localEmail ? localEmail : '',

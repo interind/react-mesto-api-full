@@ -10,7 +10,6 @@ Header.propTypes = {
 function Header({
   toggleNavbar,
   signOut,
-  email,
   link,
   selectorPlace,
   isNavbarOpen,
@@ -27,7 +26,6 @@ function Header({
       </label>
       {!isNavbarOpen && (<Navbar
         selectorPlace={selectorPlace}
-        email={email}
         link={link}
         signOut={signOut}
       />)}

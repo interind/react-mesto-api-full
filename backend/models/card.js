@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const mongoose = require('mongoose');
 const { regHttp } = require('../utils/reg.ext.js');
 
