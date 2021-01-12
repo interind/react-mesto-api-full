@@ -74,7 +74,7 @@ function Login({
           active={activeButton}
           signOut={signOut}
           onSubmit={verifiesAuthorization}>
-          <MarkupForPopups.Check
+          <MarkupForPopups.Login
             email={emailAndPassword.email}
             password={emailAndPassword.password}
             placeMessage={validCheck}

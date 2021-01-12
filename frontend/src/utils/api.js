@@ -14,13 +14,14 @@ class Api {
       : Promise.reject(new Error(`Ошибка api: ${res.status}`));
   }
 
-  register(password, email) { // регистрация
+  register({...arg}) { // регистрация
+    console.log({...arg});
     return fetch(`${this._url}${this.auth}`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify({ password, email }),
+      body: JSON.stringify({...arg}),
     })
       .then(this._getResponse)
  }

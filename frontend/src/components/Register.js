@@ -20,13 +20,9 @@ function Register({
   onRegister,
   isLoadingButton,
 }) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [register, setRegister] = React.useState({ password: "", email: "" });
   const [activeButton, setActiveButton] = React.useState(true);
-  const [validCheck, setValidCheck] = React.useState({
-    password: '',
-    email: '',
-  });
+  const [validCheck, setValidCheck] = React.useState({});
   const textButton = isLoadingButton ? 'Проверка...' : 'Регистрация';
   const checkPopup = {
     name: 'check',
@@ -48,30 +44,25 @@ function Register({
         });
   }
 
-  function setPasswordUser(evt) {
-    setPassword(evt.target.value);
+  function setRegisterUser(evt) {
+    setRegister({...register, [evt.target.name]: evt.target.value});
     setActiveButton(!evt.target.value);
   }
 
-  function setEmailUser(evt) {
-    setEmail(evt.target.value);
-    setActiveButton(!evt.target.value);
-  }
 
   function clearInput() {
-    setPassword('');
-    setEmail('');
+    setRegister({ ...register, password: '', email: '' });
   }
 
   function verifiesRegistration(evt) {
     evt.preventDefault();
 
     clearInput();
-    onRegister(password, email);
+    onRegister({...register});
   }
   return (
     <React.Fragment>
-      <div className='page__elements'>
+      <div className="page__elements">
         <PopupWithForm
           isOpen={isOpen}
           active={activeButton}
@@ -80,13 +71,14 @@ function Register({
           buttonTitle={checkPopup.buttonTitle}
           userAuthInfo={checkPopup.linkInfo}
           signOut={signOut}
-          onSubmit={verifiesRegistration}>
-          <MarkupForPopups.Check
-            email={email}
-            password={password}
+          onSubmit={verifiesRegistration}
+        >
+          <MarkupForPopups.Register
+            email={register.email}
+            password={register.password}
             placeMessage={validCheck}
-            editEmail={setEmailUser}
-            editPassword={setPasswordUser}
+            editEmail={setRegisterUser}
+            editPassword={setRegisterUser}
             validationCheck={validationCheck}
           />
         </PopupWithForm>

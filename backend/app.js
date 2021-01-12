@@ -13,7 +13,7 @@ const routerError = require('./routes/error.js');
 const PORT = process.env.PORT || config.get('PORT');
 const BASE_PATH = `http://localhost:${PORT}`;
 const app = express();
-
+app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', `${BASE_PATH}`);
   res.header(
