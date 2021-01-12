@@ -55,6 +55,7 @@
 @import url(./blocks/popup/__input-error/_active/popup__input-error_active.css);
 @import url(./blocks/popup/__button-submit/popup__button-submit.css);
 @import url(./blocks/popup/__button-submit/_type/popup__button-submit_type_check.css);
+@import url(./blocks/popup/__button-submit/_type/popup__button-submit_type_register.css);
 @import url(./blocks/popup/__button-submit/_disabled/popup__button-submit_disabled.css);
 @import url(./blocks/popup/__button-close/popup__button-close.css);
 @import url(./blocks/elements/elements.css);

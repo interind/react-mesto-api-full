@@ -40,9 +40,10 @@ function PopupWithForm({
   const classTitle = classes('popup__title', {
     popup__title_type_check: name === 'check',
   });
-  const classButtonSubmit = classes('popup__button-submit', {
-    'popup__button-submit_type_check': name === 'check',
-    'popup__button-submit_disabled': active && (name !== 'check'),
+  const classButtonSubmit = classes("popup__button-submit", {
+    "popup__button-submit_type_check": name === "check",
+    "popup__button-submit_type_register": userAuthInfo,
+    "popup__button-submit_disabled": active && name !== "check",
   });
 
   return (
