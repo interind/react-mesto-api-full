@@ -1,5 +1,5 @@
 class Api {
-  constructor({ url, login, user, cards, auth, token }) {
+  constructor({ url, login, user, cards, auth }) {
     this._url = url;
     this._user = user;
     this._cards = cards;

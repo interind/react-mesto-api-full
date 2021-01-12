@@ -256,9 +256,9 @@ function App() {
     setConfirmDeletePopup(true);
     setIsCard(card);
   }
-  function handleCardClick(props) {
+  function handleCardClick({...props}) {
     // для открытия попапа с картинкой
-    setSelectedCard({ link: props.link, name: props.name });
+    setSelectedCard({ ...props });
     setOpenCard(true);
   }
 
@@ -281,7 +281,6 @@ function App() {
     // удаляем карточку
     const idCard = _id;
     setButtonLoading(true);
-
     api
       .deleteCard(_id)
       .then(() => {
@@ -298,9 +297,9 @@ function App() {
 
   async function toggleEventListenerWindow(bool) {
     if (bool) {
-      await window.addEventListener('keydown', closeAllPopupsEsc);
+      window.addEventListener('keydown', closeAllPopupsEsc);
     } else {
-      await window.removeEventListener('keydown', closeAllPopupsEsc);
+      window.removeEventListener('keydown', closeAllPopupsEsc);
     }
   }
 
@@ -317,16 +316,16 @@ function App() {
         setCurrentUser({ ...dataUser });
         setCards([...dataCards]);
         setUserAuthInfo({
-          info: "",
-          link: "/sign-up",
+          info: '',
+          link: '/sign-up',
         });
         setIsOk(true);
       })
       .catch((err) => {
-        console.error("Информация сервера с ошибкой", err.message);
+        console.error('Информация сервера с ошибкой', err.message);
         setError(err);
         setIsOk(false);
-        localStorage.removeItem("jwt");
+        localStorage.removeItem('jwt');
         setLoggedIn(false);
       })
       .finally(() => {
@@ -338,7 +337,7 @@ function App() {
       if (localStorage.getItem('jwt')) {
         setLoading(true);
         setLoggedIn(true);
-        start("jwt");
+        start('jwt');
       } else {
         localStorage.clear();
       }

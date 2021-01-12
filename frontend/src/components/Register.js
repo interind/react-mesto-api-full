@@ -46,7 +46,7 @@ function Register({
   }
 
   function setRegisterUser(evt) {
-    setRegister({...register, [evt.target.name]: evt.target.value});
+    setRegister({ ...register, [evt.target.name]: evt.target.value });
     setActiveButton(!evt.target.value);
   }
 
@@ -59,7 +59,7 @@ function Register({
     evt.preventDefault();
 
     clearInput();
-    onRegister({...register});
+    onRegister({ ...register });
   }
   return (
     <React.Fragment>
