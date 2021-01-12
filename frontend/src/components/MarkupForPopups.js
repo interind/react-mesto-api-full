@@ -197,10 +197,54 @@ export const MarkupForPopups = {
   },
   Register: function Register(props) {
     const inputValidClass = classes("popup__input popup__input_type_check", {
-      popup__input_type_error: props.password || props.email,
+      popup__input_type_error: props.password || props.email || props.name || props.about || props.avatarUser,
     });
     return (
       <React.Fragment>
+        <input
+          className={inputValidClass}
+          id="input-name"
+          type="text"
+          name="name"
+          minLength="2"
+          maxLength="40"
+          placeholder="Ваше имя"
+          value={props.name}
+          onChange={props.editName}
+          onInput={props.validationCheck}
+        />
+        {props.name !== "" && (
+          <div className="popup__error">
+            <span
+              className="popup__input-error popup__input-error_active"
+              id="input-name-error"
+            >
+              {props.placeMessage.name}
+            </span>
+          </div>
+        )}
+        <input
+          className={inputValidClass}
+          id="input-about"
+          type="text"
+          name="about"
+          minLength="2"
+          maxLength="200"
+          placeholder="Ваша профессия"
+          value={props.about}
+          onChange={props.editAbout}
+          onInput={props.validationCheck}
+        />
+        {props.about !== "" && (
+          <div className="popup__error">
+            <span
+              className="popup__input-error popup__input-error_active"
+              id="input-about-error"
+            >
+              {props.placeMessage.about}
+            </span>
+          </div>
+        )}
         <input
           className={inputValidClass}
           type="email"
@@ -243,6 +287,26 @@ export const MarkupForPopups = {
               id="input-password-error"
             >
               {props.placeMessage.password}
+            </span>
+          </div>
+        )}
+        <input
+          className={inputValidClass}
+          type="url"
+          placeholder="Ссылка на аватарку"
+          id="input-avatar"
+          name="avatar"
+          value={props.avatarUser}
+          onChange={props.editAvatar}
+          onInput={props.validationCheck}
+        />
+        {props.avatar !== "" && (
+          <div className="popup__error">
+            <span
+              className="popup__input-error popup__input-error_active"
+              id="input-avatar-error "
+            >
+              {props.placeMessage.avatar}
             </span>
           </div>
         )}

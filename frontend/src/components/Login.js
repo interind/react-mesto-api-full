@@ -61,8 +61,9 @@ function Login({
     if (!emailAndPassword.password || !emailAndPassword.email) {
       return;
     }
-    onLogin(emailAndPassword, evt)
+    onLogin(evt, emailAndPassword);
   }
+
   return (
     <React.Fragment>
       <div className='page__elements'>

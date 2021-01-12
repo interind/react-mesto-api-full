@@ -57,7 +57,7 @@ function App() {
     info: '',
   });
 
-  function onLogin(emailAndPassword, evt) {
+  function onLogin(evt, emailAndPassword) {
     setButtonLoading(true);
     api
       .authorizationPost({
@@ -67,8 +67,8 @@ function App() {
         setButtonLoading(false);
         if (data.token) {
           localStorage.setItem('jwt', data.token);
-
           handleLogin(evt);
+          start('jwt');
           setOpenCheck(false);
           infoMessage('Добро пожаловать на проект Mesto', true);
         } else if (!data.token && data.message) {
@@ -126,7 +126,13 @@ function App() {
       if (localStorage.getItem('jwt')) {
         localStorage.removeItem('jwt');
         localStorage.removeItem('email');
-        setCurrentUser({ ...currentUser, email: '' });
+        setCurrentUser({
+          name: '',
+          about: '',
+          _id: '',
+          avatar: '',
+          email: '',
+        });
         handleLogOut(evt);
         history.push('/sign-in');
       } else {
@@ -153,8 +159,8 @@ function App() {
 
   function handleLogin(evt) {
     evt.preventDefault();
-    setLoggedIn(true);
     history.push('/');
+    setLoggedIn(true);
     setLoading(true);
   }
 
@@ -163,12 +169,12 @@ function App() {
     setLoggedIn(false);
   }
 
-  function handleUpdateUser(props) {
+  function handleUpdateUser({name, about}) {
     // получаем новую информацию пользователя  с сервера
     setButtonLoading(true);
 
     api
-      .updateUserInfo({ name: props.name, about: props.about })
+      .updateUserInfo({ name, about })
       .then((infoUser) => {
         setCurrentUser({
           ...currentUser,
@@ -304,32 +310,35 @@ function App() {
     }
   }
 
+  function start(string) {
+    api.token = localStorage.getItem(string);
+    Promise.all([api.getInfoForUser(), api.getInfoForCards()])
+      .then(([dataUser, dataCards]) => {
+        setCurrentUser({ ...dataUser });
+        setCards([...dataCards]);
+        setUserAuthInfo({
+          info: "",
+          link: "/sign-up",
+        });
+        setIsOk(true);
+      })
+      .catch((err) => {
+        console.error("Информация сервера с ошибкой", err.message);
+        setError(err);
+        setIsOk(false);
+        localStorage.removeItem("jwt");
+        setLoggedIn(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   React.useEffect(() => {
       if (localStorage.getItem('jwt')) {
+        setLoading(true);
         setLoggedIn(true);
-        api.token = localStorage.getItem("jwt");
-        Promise.all([api
-          .getInfoForUser(), api
-                .getInfoForCards()])
-          .then(([dataUser, dataCards]) => {
-            setCurrentUser(dataUser);
-            setCards([...dataCards]);
-            setUserAuthInfo({
-              info: "",
-              link: "/sign-up",
-            });
-            setIsOk(true);
-          })
-          .catch((err) => {
-            console.error("Информация сервера с ошибкой", err.message);
-            setError(err);
-            setIsOk(false);
-            localStorage.removeItem("jwt");
-            setLoggedIn(false);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
+        start("jwt");
       } else {
         localStorage.clear();
       }

@@ -8,7 +8,7 @@ PopupWithForm.propTypes = {
   isOpen: PropTypes.bool,
   name: PropTypes.string,
   title: PropTypes.string,
-  children: PropTypes.object,
+  children: PropTypes.object || PropTypes.func,
   buttonTitle: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func,

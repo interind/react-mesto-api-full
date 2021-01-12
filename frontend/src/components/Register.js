@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import { MarkupForPopups } from './MarkupForPopups';
 
+
 Register.propTypes = {
   isOpen: PropTypes.bool,
   isLoadingButton: PropTypes.bool,
@@ -20,7 +21,7 @@ function Register({
   onRegister,
   isLoadingButton,
 }) {
-  const [register, setRegister] = React.useState({ password: "", email: "" });
+  const [register, setRegister] = React.useState({ password: '', email: '', name: '', about: '', avatar: '' });
   const [activeButton, setActiveButton] = React.useState(true);
   const [validCheck, setValidCheck] = React.useState({});
   const textButton = isLoadingButton ? 'Проверка...' : 'Регистрация';
@@ -51,7 +52,7 @@ function Register({
 
 
   function clearInput() {
-    setRegister({ ...register, password: '', email: '' });
+    setRegister({ ...register, password: '', email: '', name: '', about: '', avatar: '' });
   }
 
   function verifiesRegistration(evt) {
@@ -74,11 +75,17 @@ function Register({
           onSubmit={verifiesRegistration}
         >
           <MarkupForPopups.Register
+            about={register.about}
             email={register.email}
+            name={register.name}
+            avatarUser={register.avatar}
             password={register.password}
             placeMessage={validCheck}
             editEmail={setRegisterUser}
             editPassword={setRegisterUser}
+            editAvatar={setRegisterUser}
+            editName={setRegisterUser}
+            editAbout={setRegisterUser}
             validationCheck={validationCheck}
           />
         </PopupWithForm>
