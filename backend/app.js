@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const { errors } = require('celebrate');
-const { requestLogger, errorLogger } = require('./middlewares/logger.js');
+const { requestLogger, errorLogger, errorsConsole } = require('./middlewares/logger.js');
 const { errorsResponse } = require('./middlewares/errors.js');
 const routerAuth = require('./routes/auth.js');
 const routerUsers = require('./routes/users.js');
@@ -43,5 +43,6 @@ app.use(routerError);
 app.use(errorLogger); // log ошибок
 app.use(errors()); // ошибки celebrate
 app.use(errorsResponse);
+app.use(errorsConsole);
 
 module.exports = app;
