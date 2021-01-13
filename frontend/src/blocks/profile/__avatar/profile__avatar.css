@@ -1,10 +1,16 @@
 .profile__avatar {
+  display: flex;
   overflow: hidden;
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
+  background-image: url('../../../images/profile/avatar/unnamed.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   background: #000;
+  font-size: xx-small;
 }
 
 .profile__avatar:hover {

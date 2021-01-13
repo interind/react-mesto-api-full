@@ -55,7 +55,16 @@ module.exports.createUser = (req, res, next) => {
     email,
     password: hash,
   }))
-    .then((user) => res.send({ data: user }))
+    .then(({ _id }) => {
+      User.findById(_id)
+        .then((user) => {
+          if (!user) {
+            throw Error;
+          }
+          return res.send({ data: user });
+        })
+        .catch(next);
+    })
     .catch(next);
 };
 
