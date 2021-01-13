@@ -24,6 +24,7 @@ function InfoTooltip({ isOpen, onClose, toggleEventListenerWindow }) {
       'popup_opened popup__type_tool': isOpenTool,
     }),
   };
+
   React.useEffect(() => {
     if (isOpenTool) {
       toggleEventListenerWindow(true);

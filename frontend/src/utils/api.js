@@ -16,9 +16,9 @@ class Api {
 
   register(arg) { // регистрация
     return fetch(`${this._url}${this.auth}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-type": "application/json; charset=UTF-8",
+        'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({ ...arg }),
     }).then(this._getResponse);
@@ -102,7 +102,7 @@ class Api {
 
       headers: {
         'Authorization': `Bearer ${this.token}`,
-        "Content-type": "application/json; charset=UTF-8",
+        'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(this._getResponse);
   }

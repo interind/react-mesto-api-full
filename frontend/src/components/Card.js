@@ -47,7 +47,7 @@ function Card({ card, onCardClick, onCardDelete, onCardLike }) {
                 ></button>
                 <span
                   className='element__counter-like'
-                  title={card.likes.map((index) => index + 1 + '🖤')}
+                  title={card.likes.map((like) => like = '🖤')}
                 >
                   {card.likes.length}
                 </span>

@@ -438,7 +438,7 @@ function App() {
                 />
               </Route>
             </Switch>
-            {!loading && <Footer />}
+            {loggedIn && <Footer />}
           </ErrorBoundary>
         </CurrentUserContext.Provider>
       </Page>
