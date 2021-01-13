@@ -41,8 +41,13 @@ app.use(routerCards);
 app.use(routerError);
 
 app.use(errorLogger); // log ошибок
+app.use((error, req, res, next) => {
+  if (res.headerSent) {
+    return next(res);
+  }
+  return next(error);
+});
 app.use(errors()); // ошибки celebrate
 app.use(errorsResponse);
-app.use(errorsConsole);
 
 module.exports = app;

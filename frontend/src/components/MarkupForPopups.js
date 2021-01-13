@@ -197,7 +197,7 @@ export const MarkupForPopups = {
   },
   Register: function Register(props) {
     const inputValidClass = classes('popup__input popup__input_type_check', {
-      popup__input_type_error: props.password || props.email || props.name || props.about || props.avatarUser,
+      popup__input_type_error: (props.password || props.email || props.name || props.about || props.avatarUser),
     });
     return (
       <React.Fragment>
@@ -254,6 +254,7 @@ export const MarkupForPopups = {
           name='email'
           onChange={props.editEmail}
           onInput={props.validationCheck}
+          title='обязательное поле'
           required
         />
         {props.email !== '' && (
@@ -278,6 +279,7 @@ export const MarkupForPopups = {
           onChange={props.editPassword}
           onInput={props.validationCheck}
           autoComplete='off'
+          title='обязательное поле'
           required
         />
         {props.password && (
