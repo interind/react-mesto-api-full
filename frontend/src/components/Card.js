@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import CurrentUserContext from '../context/CurrentUserContext';
 
 function Card({ card, onCardClick, onCardDelete, onCardLike }) {
   const { _id } = React.useContext(CurrentUserContext);
@@ -47,7 +47,7 @@ function Card({ card, onCardClick, onCardDelete, onCardLike }) {
                 ></button>
                 <span
                   className='element__counter-like'
-                  title={card.likes.map((like) => like = '🖤')}
+                  title={card.likes.map(() => '🖤')}
                 >
                   {card.likes.length}
                 </span>

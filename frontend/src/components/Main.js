@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card.js';
-import Profile from './Profile';
+import ProfileUser from './Profile';
 import '../index.css';
 
 Main.propTypes = {
@@ -26,7 +26,7 @@ function Main({
 
   return (
     <React.Fragment>
-      <Profile
+      <ProfileUser
         onAddPlace={onAddPlace}
         onEditAvatar={onEditAvatar}
         onEditProfile={onEditProfile}

@@ -5,6 +5,10 @@ import Navbar from './Navbar';
 
 Header.propTypes = {
   toggleNavbar: PropTypes.func.isRequired,
+  signOut: PropTypes.func,
+  link: PropTypes.string,
+  selectorPlace: PropTypes.string,
+  isNavbarOpen: PropTypes.bool,
 };
 
 function Header({

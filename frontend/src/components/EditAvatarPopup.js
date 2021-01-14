@@ -25,7 +25,6 @@ function EditAvatarPopup({
     return () => {
       toggleEventListenerWindow(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const textButton = isLoadingButton ? 'Сохранение...' : 'Сохранить';

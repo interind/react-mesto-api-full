@@ -25,6 +25,7 @@
 */.editorconfig
 */.eslintignore
 */.eslintrc
+*/.eslintrc.json
 
 # Logs
 */logs

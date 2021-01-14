@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PopupWithForm from './PopupWithForm.js';
-import { MarkupForPopups } from './MarkupForPopups.js';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import PopupWithForm from './PopupWithForm';
+import { MarkupForPopups } from './MarkupForPopups';
+import CurrentUserContext from '../context/CurrentUserContext';
 
 EditProfilePopup.propTypes = {
   isOpen: PropTypes.bool,
@@ -26,7 +26,6 @@ function EditProfilePopup({
     return () => {
       toggleEventListenerWindow(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const textButton = isLoadingButton ? 'Сохранение...' : 'Сохранить';

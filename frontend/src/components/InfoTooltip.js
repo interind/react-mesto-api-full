@@ -9,6 +9,7 @@ InfoTooltip.propTypes = {
   isTooltip: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   toggleEventListenerWindow: PropTypes.func.isRequired,
+  isOpen: PropTypes.object,
 };
 
 function InfoTooltip({ isOpen, onClose, toggleEventListenerWindow }) {
@@ -32,7 +33,6 @@ function InfoTooltip({ isOpen, onClose, toggleEventListenerWindow }) {
     return () => {
       toggleEventListenerWindow(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenTool]);
 
   return (

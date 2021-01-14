@@ -1,7 +1,8 @@
 import React from 'react';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import PropTypes from 'prop-types';
+import CurrentUserContext from '../context/CurrentUserContext';
 
-function Profile({ onAddPlace, onEditAvatar, onEditProfile }) {
+function ProfileUser({ onAddPlace, onEditAvatar, onEditProfile }) {
  const { name, about, avatar, _id } = React.useContext(CurrentUserContext);
 
  return (
@@ -35,4 +36,10 @@ function Profile({ onAddPlace, onEditAvatar, onEditProfile }) {
  );
 }
 
-export default Profile;
+ProfileUser.propTypes = {
+  onAddPlace: PropTypes.func,
+  onEditAvatar: PropTypes.func,
+  onEditProfile: PropTypes.func
+}
+
+export default ProfileUser;

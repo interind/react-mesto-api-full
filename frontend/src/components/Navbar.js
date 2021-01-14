@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classes from 'classnames';
 import PropTypes from 'prop-types';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import CurrentUserContext from '../context/CurrentUserContext';
 
 Navbar.propTypes = {
   info: PropTypes.string,

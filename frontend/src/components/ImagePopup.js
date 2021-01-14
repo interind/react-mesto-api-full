@@ -22,7 +22,6 @@ function ImagePopup({
     return () => {
       toggleEventListenerWindow(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const popup = classes('popup popup_type_zoom', { popup_opened: isOpen });

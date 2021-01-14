@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -8,26 +9,31 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({
-      error: error,
-      errorInfo: errorInfo,
+      error,
+      errorInfo,
     });
   }
 
   render() {
-    if (this.state.errorInfo) {
+    const { errorInfo, error } = this.state;
+    if (errorInfo) {
       return (
         <div>
           <h2>Что-то пошло не так!</h2>
           <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.error && this.state.error.toString()}
+            {error && error.toString()}
             <br />
-            {this.state.errorInfo.componentStack}
+            {errorInfo.componentStack}
           </details>
         </div>
       );
     }
     return this.props.children;
   }
+}
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.array
 }
 
 export default ErrorBoundary;

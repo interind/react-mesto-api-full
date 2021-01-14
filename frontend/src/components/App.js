@@ -1,22 +1,27 @@
 import React from 'react';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import api from '../utils/api.js';
-import Main from './Main.js';
+import {
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+} from 'react-router-dom';
+import api from '../utils/api';
+import Main from './Main';
 import Login from './Login';
-import Header from './Header.js';
-import Footer from './Footer.js';
-import Loader from './Loader/Loader.js';
+import Header from './Header';
+import Footer from './Footer';
+import Loader from './Loader/Loader';
 import Register from './Register';
 import ErrorPage from './Error/ErrorPage';
 import ImagePopup from './ImagePopup';
-import InfoTooltip from './InfoTooltip.js';
-import AddPlacePopup from './AddPlacePopup.js';
-import ErrorBoundary from './Error/ErrorBoundary.js';
+import InfoTooltip from './InfoTooltip';
+import AddPlacePopup from './AddPlacePopup';
+import ErrorBoundary from './Error/ErrorBoundary';
 import ProtectedRoute from './ProtectedRoute';
-import EditAvatarPopup from './EditAvatarPopup.js';
-import DeleteCardPopup from './DeleteCardPopup.js';
-import EditProfilePopup from './EditProfilePopup.js';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import EditAvatarPopup from './EditAvatarPopup';
+import DeleteCardPopup from './DeleteCardPopup';
+import EditProfilePopup from './EditProfilePopup';
+import CurrentUserContext from '../context/CurrentUserContext';
 import Navbar from './Navbar';
 import Page from './Page';
 
@@ -191,11 +196,11 @@ function App() {
       });
   }
 
-  function handleUpdateAvatar(props) {
+  function handleUpdateAvatar({avatar}) {
     setButtonLoading(true);
     // получаем обновленный аватар с сервера
     api
-      .updateUserAvatar({ avatar: props.avatar })
+      .updateUserAvatar({avatar})
       .then((infoAvatar) => {
         setCurrentUser({ ...currentUser, avatar: infoAvatar.avatar });
       })
@@ -208,11 +213,11 @@ function App() {
       });
   }
 
-  function handleAddPlace(props) {
+  function handleAddPlace({name, link}) {
     setButtonLoading(true);
     // получаем новую карточку с сервера и вставляем в начало
     api
-      .addCard({ name: props.name, link: props.link })
+      .addCard({ name, link })
       .then((newCard) => {
         if(!newCard) {
           return Promise.reject(new Error('ошибка данных'));
@@ -345,17 +350,20 @@ function App() {
 
   return (
     <React.Fragment>
-      {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
+    {loggedIn ?
+      <Redirect to='/' /> :
+      <Redirect to='/sign-in' />
+    }
       <Page>
         <CurrentUserContext.Provider value={currentUser}>
           <ErrorBoundary>
-            {isNavbarOpen && (
-              <Navbar
-                selectorPlace={'page'}
-                link={userAuthInfo.link}
-                signOut={signOut}
-              />
-            )}
+          {isNavbarOpen && (
+            <Navbar
+              selectorPlace={'page'}
+              link={userAuthInfo.link}
+              signOut={signOut}
+            />
+          )}
             <Header
               selectorPlace={'header'}
               link={userAuthInfo.link}
@@ -370,7 +378,7 @@ function App() {
             />
             <Switch>
               <ProtectedRoute exact path='/' loggedIn={loggedIn}>
-                {loading && <Loader />}
+              {loading && <Loader />}
                 <React.Fragment>
                   <Main
                     cards={cards}
@@ -417,7 +425,7 @@ function App() {
                     toggleEventListenerWindow={toggleEventListenerWindow}
                   />
                 </React.Fragment>
-                {!statusOk && <ErrorPage error={statusError} />}
+              {!statusOk && <ErrorPage error={statusError} />}
               </ProtectedRoute>
               {!loading && (
                 <Route path='/sign-in' exact>
