@@ -1,15 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PopupWithForm from './PopupWithForm.js';
-import { MarkupForPopups } from './MarkupForPopups.js';
-
-AddPlacePopup.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
-  onAddPlace: PropTypes.func.isRequired,
-  toggleEventListenerWindow: PropTypes.func.isRequired,
-};
+import PopupWithForm from './PopupWithForm';
+import { MarkupForPopups } from './MarkupForPopups';
 
 function AddPlacePopup({
   isLoadingButton,
@@ -18,14 +10,13 @@ function AddPlacePopup({
   onAddPlace,
   toggleEventListenerWindow,
 }) {
-
   React.useEffect(() => {
     if (isOpen) {
       toggleEventListenerWindow(true);
     }
     return () => {
-       toggleEventListenerWindow(false);
-    }
+      toggleEventListenerWindow(false);
+    };
   }, [isOpen]);
 
   const textButton = isLoadingButton ? 'Сохранение...' : 'Сохранить';
@@ -45,13 +36,12 @@ function AddPlacePopup({
   });
 
   function validationPlace(evt) {
-    !evt.target.validity.valid
-      ? setValidPlace({
-          [evt.target.name]: evt.target.validationMessage,
-        })
-      : setValidPlace({
-          [evt.target.name]: '',
-        });
+    if (!evt.target.validity.valid) {
+      setValidPlace({
+        [evt.target.name]: evt.target.validationMessage,
+      });
+    }
+    setValidPlace({ [evt.target.name]: '' });
   }
 
   function setPlaceName(evt) {
@@ -68,7 +58,7 @@ function AddPlacePopup({
     setLink('');
     onAddPlace({
       name: namePlace,
-      link: link,
+      link,
     });
   }
   return (
@@ -91,5 +81,13 @@ function AddPlacePopup({
     </PopupWithForm>
   );
 }
+
+AddPlacePopup.propTypes = {
+  isOpen: PropTypes.bool,
+  isLoadingButton: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  onAddPlace: PropTypes.func.isRequired,
+  toggleEventListenerWindow: PropTypes.func.isRequired,
+};
 
 export default AddPlacePopup;

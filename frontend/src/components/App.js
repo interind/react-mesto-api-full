@@ -31,9 +31,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
-  const [isConfirmDeletePopupOpen, setConfirmDeletePopup] = React.useState(
-    false
-  );
+  const [isConfirmDeletePopupOpen, setConfirmDeletePopup] = React.useState(false);
   const [isNavbarOpen, setNavbarOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({
     name: '',
@@ -48,7 +46,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const [statusError, setError] = React.useState({}); // флаг для ошибки сервера
-  const [isOpenCard, setOpenCard] = React.useState(false); // тут булевое значение для попапа с картинкой
+  const [isOpenCard, setOpenCard] = React.useState(false); // значение для попапа с картинкой
   const [isOpenCheck, setOpenCheck] = React.useState(true); // окно информации регистрации
   const [isTooltip, setTooltip] = React.useState({
     isOpenTool: false,
@@ -61,6 +59,62 @@ function App() {
     link: '/sign-up',
     info: '',
   });
+
+  function infoMessage(text, bool) {
+    setTooltip({
+      ...isTooltip,
+      isOpenTool: true,
+      status: bool,
+      message: text,
+    });
+  }
+
+  function closeAllPopups() {
+    // закрытие всех попапов
+    setEditAvatarPopup(false);
+    setEditProfilePopup(false);
+    setAddPlacePopup(false);
+    setConfirmDeletePopup(false);
+    setOpenCard(false);
+    setButtonLoading(false);
+    setOpenCheck(true);
+    setTooltip({
+      ...isTooltip,
+      isOpenTool: false,
+      message: '',
+    });
+  }
+
+  function handleLogin(evt) {
+    evt.preventDefault();
+    history.push('/');
+    setLoggedIn(true);
+    setLoading(true);
+  }
+
+  function start(string) {
+    api.token = localStorage.getItem(string);
+    Promise.all([api.getInfoForUser(), api.getInfoForCards()])
+      .then(([dataUser, dataCards]) => {
+        setCurrentUser({ ...dataUser });
+        setCards([...dataCards]);
+        setUserAuthInfo({
+          info: '',
+          link: '/sign-up',
+        });
+        setIsOk(true);
+      })
+      .catch((err) => {
+        console.error('Информация сервера с ошибкой', err.message);
+        setError(err);
+        setIsOk(false);
+        localStorage.removeItem('jwt');
+        setLoggedIn(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   function onLogin(evt, emailAndPassword) {
     setButtonLoading(true);
@@ -117,13 +171,9 @@ function App() {
       });
   }
 
-  function infoMessage(text, bool) {
-    setTooltip({
-      ...isTooltip,
-      isOpenTool: true,
-      status: bool,
-      message: text,
-    });
+  function handleLogOut(evt) {
+    evt.preventDefault();
+    setLoggedIn(false);
   }
 
   function signOut(evt) {
@@ -162,18 +212,6 @@ function App() {
     }
   }
 
-  function handleLogin(evt) {
-    evt.preventDefault();
-    history.push('/');
-    setLoggedIn(true);
-    setLoading(true);
-  }
-
-  function handleLogOut(evt) {
-    evt.preventDefault();
-    setLoggedIn(false);
-  }
-
   function handleUpdateUser({name, about}) {
     // получаем новую информацию пользователя  с сервера
     setButtonLoading(true);
@@ -187,9 +225,7 @@ function App() {
           about: infoUser.about,
         });
       })
-      .catch((err) =>
-        console.error('Информация обновления пользователя с ошибкой', err)
-      )
+      .catch((err) => console.error('Информация обновления пользователя с ошибкой', err))
       .finally(() => {
         setButtonLoading(false);
         closeAllPopups();
@@ -204,9 +240,7 @@ function App() {
       .then((infoAvatar) => {
         setCurrentUser({ ...currentUser, avatar: infoAvatar.avatar });
       })
-      .catch((err) =>
-        console.error('Информация обновления пользователя с ошибкой', err)
-      )
+      .catch((err) => console.error('Информация обновления пользователя с ошибкой', err))
       .finally(() => {
         setButtonLoading(false);
         closeAllPopups();
@@ -219,33 +253,15 @@ function App() {
     api
       .addCard({ name, link })
       .then((newCard) => {
-        if(!newCard) {
+        if (!newCard) {
           return Promise.reject(new Error('ошибка данных'));
         }
         setCards([newCard, ...cards]);
       })
-      .catch((err) =>
-        console.error('Информация обновления карточки с ошибкой', err)
-      )
+      .catch((err) => console.error('Информация обновления карточки с ошибкой', err))
       .finally(() => {
         closeAllPopups();
       });
-  }
-
-  function closeAllPopups() {
-    // закрытие всех попапов
-    setEditAvatarPopup(false);
-    setEditProfilePopup(false);
-    setAddPlacePopup(false);
-    setConfirmDeletePopup(false);
-    setOpenCard(false);
-    setButtonLoading(false);
-    setOpenCheck(true);
-    setTooltip({
-      ...isTooltip,
-      isOpenTool: false,
-      message: '',
-    });
   }
 
   function handleEditAvatarClick() {
@@ -277,9 +293,7 @@ function App() {
         const newCards = cards.map((c) => (c._id === _id ? newCard : c));
         setCards(newCards);
       })
-      .catch((err) =>
-        console.error('Информация по карточкам с ошибкой', err.message)
-      );
+      .catch((err) => console.error('Информация по карточкам с ошибкой', err.message));
   }
 
   function handleCardDelete({ _id }) {
@@ -291,9 +305,7 @@ function App() {
       .then(() => {
         setCards(cards.filter((card) => card._id !== idCard));
       })
-      .catch((err) =>
-        console.error('Информация по карточкам с ошибкой', err.message)
-      )
+      .catch((err) => console.error('Информация по карточкам с ошибкой', err.message))
       .finally(() => {
         setButtonLoading(false);
         closeAllPopups();
@@ -314,45 +326,21 @@ function App() {
     }
   }
 
-  function start(string) {
-    api.token = localStorage.getItem(string);
-    Promise.all([api.getInfoForUser(), api.getInfoForCards()])
-      .then(([dataUser, dataCards]) => {
-        setCurrentUser({ ...dataUser });
-        setCards([...dataCards]);
-        setUserAuthInfo({
-          info: '',
-          link: '/sign-up',
-        });
-        setIsOk(true);
-      })
-      .catch((err) => {
-        console.error('Информация сервера с ошибкой', err.message);
-        setError(err);
-        setIsOk(false);
-        localStorage.removeItem('jwt');
-        setLoggedIn(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
-
   React.useEffect(() => {
-      if (localStorage.getItem('jwt')) {
-        setLoading(true);
-        setLoggedIn(true);
-        start('jwt');
-      } else {
-        localStorage.clear();
-      }
+    if (localStorage.getItem('jwt')) {
+      setLoading(true);
+      setLoggedIn(true);
+      start('jwt');
+    } else {
+      localStorage.clear();
+    }
   }, []);
 
   return (
     <React.Fragment>
-    {loggedIn ?
-      <Redirect to='/' /> :
-      <Redirect to='/sign-in' />
+    {loggedIn
+      ? <Redirect to='/' />
+      : <Redirect to='/sign-in' />
     }
       <Page>
         <CurrentUserContext.Provider value={currentUser}>

@@ -23,7 +23,7 @@ function ErrorPage({ error }) {
 
 ErrorPage.propTypes = {
   error: PropTypes.object,
-  message: PropTypes.string
+  message: PropTypes.string,
 };
 
 export default ErrorPage;
