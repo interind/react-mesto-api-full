@@ -46,7 +46,7 @@ module.exports.createUser = (req, res, next) => {
     avatar,
     email,
     password,
-  } = req.body; // нужно хэшировать пароль.
+  } = req.body;
 
   bcrypt.hash(password, 10).then((hash) => User.create({
     name,
