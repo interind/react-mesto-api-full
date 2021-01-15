@@ -47,23 +47,24 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = function (email, password, next) {
-  return this.findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
+userSchema.statics.findUserByCredentials = async function (email, password, next) {
+  try {
+    const user = await this.findOne({ email }).select('+password');
+    if (!user) {
+      return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
+    }
+    try {
+      const matched = await bcrypt.compare(password, user.password);
+      if (!matched) {
         return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
       }
-
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
-          }
-          return user;
-        })
-        .catch(next);
-    })
-    .catch(next);
+      return user;
+    } catch (err) {
+      return next(err);
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
 module.exports = mongoose.model('user', userSchema);
