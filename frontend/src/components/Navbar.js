@@ -4,38 +4,30 @@ import classes from 'classnames';
 import PropTypes from 'prop-types';
 import CurrentUserContext from '../context/CurrentUserContext';
 
-Navbar.propTypes = {
-  info: PropTypes.string,
-  link: PropTypes.string,
-  signOut: PropTypes.func,
-  selectorPlace: PropTypes.string,
-};
-
-Navbar.defaultProps = {
-  selectorPlace: '',
-  info: '',
-  link: '',
-};
-
-function Navbar({ info, link, signOut, selectorPlace }) {
+function Navbar({
+  info,
+  link,
+  signOut,
+  selectorPlace,
+}) {
   const history = useHistory();
   const [title, setTitle] = React.useState('');
   const { email } = React.useContext(CurrentUserContext);
-   const selector = classes('navbar', {
+  const selector = classes('navbar', {
     navbar_place_header: selectorPlace === 'header',
     navbar_place_form: selectorPlace === 'form',
     navbar_place_page: selectorPlace === 'page',
   });
 
   React.useEffect(() => {
-    if (history.location.pathname === "/sign-up") {
+    if (history.location.pathname === '/sign-up') {
       setTitle('Вход');
-    } else if (history.location.pathname === "/sign-in") {
+    } else if (history.location.pathname === '/sign-in') {
       setTitle('Регистрация');
-    } else if (history.location.pathname === "/") {
+    } else if (history.location.pathname === '/') {
       setTitle('Выйти');
     }
-  }, [history.location.pathname])
+  }, [history.location.pathname]);
   return (
     <nav className={selector}>
       {email && <p className='navbar__info'>{email}</p>}
@@ -49,5 +41,18 @@ function Navbar({ info, link, signOut, selectorPlace }) {
     </nav>
   );
 }
+
+Navbar.propTypes = {
+  info: PropTypes.string,
+  link: PropTypes.string,
+  signOut: PropTypes.func,
+  selectorPlace: PropTypes.string,
+};
+
+Navbar.defaultProps = {
+  selectorPlace: '',
+  info: '',
+  link: '',
+};
 
 export default Navbar;

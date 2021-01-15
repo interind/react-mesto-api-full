@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CurrentUserContext from '../context/CurrentUserContext';
 
-function Card({ card, onCardClick, onCardDelete, onCardLike }) {
+function Card({
+  card,
+  onCardClick,
+  onCardDelete,
+  onCardLike,
+}) {
   const { _id } = React.useContext(CurrentUserContext);
   const [visible, setVisible] = React.useState(true);
 

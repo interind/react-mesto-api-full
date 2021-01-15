@@ -2,13 +2,6 @@ import React from 'react';
 import classes from 'classnames';
 import PropTypes from 'prop-types';
 
-ImagePopup.propTypes = {
-  isOpen: PropTypes.bool,
-  selectedCard: PropTypes.object,
-  onClose: PropTypes.func.isRequired,
-  toggleEventListenerWindow: PropTypes.func.isRequired,
-};
-
 function ImagePopup({
   selectedCard,
   onClose,
@@ -46,5 +39,12 @@ function ImagePopup({
     </div>
   );
 }
+
+ImagePopup.propTypes = {
+  isOpen: PropTypes.bool,
+  selectedCard: PropTypes.object,
+  onClose: PropTypes.func.isRequired,
+  toggleEventListenerWindow: PropTypes.func.isRequired,
+};
 
 export default ImagePopup;

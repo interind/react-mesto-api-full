@@ -1,14 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
-import { MarkupForPopups } from './MarkupForPopups';
-
-Login.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
-  onLogin: PropTypes.func.isRequired,
-  signOut: PropTypes.func,
-};
+import MarkupForPopups from './MarkupForPopups';
 
 function Login({
   isOpen,
@@ -19,7 +12,7 @@ function Login({
   const localEmail = localStorage.getItem('email') ? localStorage.getItem('email') : '';
   const [activeButton, setActiveButton] = React.useState(true);
   const [emailAndPassword, setEmailAndPassword] = React.useState({
-    email: localEmail ? localEmail : '',
+    email: localEmail || '',
     password: '',
   });
   const [validCheck, setValidCheck] = React.useState({
@@ -34,13 +27,10 @@ function Login({
   };
 
   function validationCheck(evt) {
-    !evt.target.validity.valid
-      ? setValidCheck({
-          [evt.target.name]: evt.target.validationMessage,
-        })
-      : setValidCheck({
-          [evt.target.name]: '',
-        });
+    if (!evt.target.validity.valid) {
+      setValidCheck({ [evt.target.name]: evt.target.validationMessage });
+    }
+    setValidCheck({ [evt.target.name]: '' });
   }
 
   function setPasswordUser(evt) {
@@ -89,5 +79,11 @@ function Login({
   );
 }
 
-export default Login;
+Login.propTypes = {
+  isOpen: PropTypes.bool,
+  isLoadingButton: PropTypes.bool,
+  onLogin: PropTypes.func.isRequired,
+  signOut: PropTypes.func,
+};
 
+export default Login;

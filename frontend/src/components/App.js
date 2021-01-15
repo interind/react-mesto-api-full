@@ -212,7 +212,7 @@ function App() {
     }
   }
 
-  function handleUpdateUser({name, about}) {
+  function handleUpdateUser({ name, about }) {
     // получаем новую информацию пользователя  с сервера
     setButtonLoading(true);
 
@@ -232,11 +232,11 @@ function App() {
       });
   }
 
-  function handleUpdateAvatar({avatar}) {
+  function handleUpdateAvatar({ avatar }) {
     setButtonLoading(true);
     // получаем обновленный аватар с сервера
     api
-      .updateUserAvatar({avatar})
+      .updateUserAvatar({ avatar })
       .then((infoAvatar) => {
         setCurrentUser({ ...currentUser, avatar: infoAvatar.avatar });
       })
@@ -247,7 +247,7 @@ function App() {
       });
   }
 
-  function handleAddPlace({name, link}) {
+  function handleAddPlace({ name, link }) {
     setButtonLoading(true);
     // получаем новую карточку с сервера и вставляем в начало
     api
@@ -256,7 +256,7 @@ function App() {
         if (!newCard) {
           return Promise.reject(new Error('ошибка данных'));
         }
-        setCards([newCard, ...cards]);
+        return setCards([newCard, ...cards]);
       })
       .catch((err) => console.error('Информация обновления карточки с ошибкой', err))
       .finally(() => {
@@ -277,7 +277,7 @@ function App() {
     setConfirmDeletePopup(true);
     setIsCard(card);
   }
-  function handleCardClick({...props}) {
+  function handleCardClick({ ...props }) {
     // для открытия попапа с картинкой
     setSelectedCard({ ...props });
     setOpenCard(true);
@@ -312,17 +312,17 @@ function App() {
       });
   }
 
+  function closeAllPopupsEsc(evt) {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+    }
+  }
+
   async function toggleEventListenerWindow(bool) {
     if (bool) {
       window.addEventListener('keydown', closeAllPopupsEsc);
     } else {
       window.removeEventListener('keydown', closeAllPopupsEsc);
-    }
-  }
-
-  function closeAllPopupsEsc(evt) {
-    if (evt.key === 'Escape') {
-      closeAllPopups();
     }
   }
 

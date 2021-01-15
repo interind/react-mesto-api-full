@@ -3,14 +3,7 @@ import classes from 'classnames';
 import PropTypes from 'prop-types';
 import enable from '../images/check/iconOk.svg';
 import disable from '../images/check/iconUnion.svg';
-import { MarkupForPopups } from './MarkupForPopups';
-
-InfoTooltip.propTypes = {
-  isTooltip: PropTypes.object,
-  onClose: PropTypes.func.isRequired,
-  toggleEventListenerWindow: PropTypes.func.isRequired,
-  isOpen: PropTypes.object,
-};
+import MarkupForPopups from './MarkupForPopups';
 
 function InfoTooltip({ isOpen, onClose, toggleEventListenerWindow }) {
   const { isOpenTool, status, message } = isOpen;
@@ -46,5 +39,12 @@ function InfoTooltip({ isOpen, onClose, toggleEventListenerWindow }) {
     />
   );
 }
+
+InfoTooltip.propTypes = {
+  isTooltip: PropTypes.object,
+  onClose: PropTypes.func.isRequired,
+  toggleEventListenerWindow: PropTypes.func.isRequired,
+  isOpen: PropTypes.object,
+};
 
 export default InfoTooltip;

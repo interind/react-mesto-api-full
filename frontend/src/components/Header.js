@@ -3,14 +3,6 @@ import PropTypes from 'prop-types';
 import headerLogo from '../images/header/logoFon.svg';
 import Navbar from './Navbar';
 
-Header.propTypes = {
-  toggleNavbar: PropTypes.func.isRequired,
-  signOut: PropTypes.func,
-  link: PropTypes.string,
-  selectorPlace: PropTypes.string,
-  isNavbarOpen: PropTypes.bool,
-};
-
 function Header({
   toggleNavbar,
   signOut,
@@ -36,5 +28,13 @@ function Header({
     </header>
   );
 }
+
+Header.propTypes = {
+  toggleNavbar: PropTypes.func.isRequired,
+  signOut: PropTypes.func,
+  link: PropTypes.string,
+  selectorPlace: PropTypes.string,
+  isNavbarOpen: PropTypes.bool,
+};
 
 export default Header;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
-import { MarkupForPopups } from './MarkupForPopups';
+import MarkupForPopups from './MarkupForPopups';
 
 function AddPlacePopup({
   isLoadingButton,

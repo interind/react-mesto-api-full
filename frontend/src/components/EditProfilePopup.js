@@ -1,16 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
-import { MarkupForPopups } from './MarkupForPopups';
+import MarkupForPopups from './MarkupForPopups';
 import CurrentUserContext from '../context/CurrentUserContext';
-
-EditProfilePopup.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
-  onUpdateUser: PropTypes.func.isRequired,
-  toggleEventListenerWindow: PropTypes.func.isRequired,
-};
 
 function EditProfilePopup({
   isLoadingButton,
@@ -44,13 +36,10 @@ function EditProfilePopup({
   });
 
   function validationProfile(evt) {
-    !evt.target.validity.valid
-      ? setValidProfile({
-          [evt.target.name]: evt.target.validationMessage,
-        })
-      : setValidProfile({
-          [evt.target.name]: '',
-        });
+    if (!evt.target.validity.valid) {
+      setValidProfile({ [evt.target.name]: evt.target.validationMessage });
+    }
+    setValidProfile({ [evt.target.name]: '' });
   }
 
   React.useEffect(() => {
@@ -95,5 +84,13 @@ function EditProfilePopup({
     </PopupWithForm>
   );
 }
+
+EditProfilePopup.propTypes = {
+  isOpen: PropTypes.bool,
+  isLoadingButton: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  onUpdateUser: PropTypes.func.isRequired,
+  toggleEventListenerWindow: PropTypes.func.isRequired,
+};
 
 export default EditProfilePopup;

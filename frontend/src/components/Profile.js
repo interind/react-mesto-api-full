@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import CurrentUserContext from '../context/CurrentUserContext';
 
 function ProfileUser({ onAddPlace, onEditAvatar, onEditProfile }) {
- const { name, about, avatar, _id } = React.useContext(CurrentUserContext);
+  const {
+    name,
+    about,
+    avatar,
+    _id,
+  } = React.useContext(CurrentUserContext);
 
- return (
+  return (
    <section className='profile page__profile'>
      <img
        id={_id}
@@ -33,13 +38,13 @@ function ProfileUser({ onAddPlace, onEditAvatar, onEditProfile }) {
        className='profile__add-button'
        onClick={onAddPlace}></button>
    </section>
- );
+  );
 }
 
 ProfileUser.propTypes = {
   onAddPlace: PropTypes.func,
   onEditAvatar: PropTypes.func,
-  onEditProfile: PropTypes.func
-}
+  onEditProfile: PropTypes.func,
+};
 
 export default ProfileUser;

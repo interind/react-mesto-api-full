@@ -1,15 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PopupWithForm from './PopupWithForm.js';
-
-DeleteCardPopup.propTypes = {
-  isOpen: PropTypes.bool,
-  isCard: PropTypes.object,
-  isLoadingButton: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
-  onDeleteCard: PropTypes.func.isRequired,
-  toggleEventListenerWindow: PropTypes.func.isRequired,
-};
+import PopupWithForm from './PopupWithForm';
 
 function DeleteCardPopup({
   isOpen,
@@ -52,5 +43,14 @@ function DeleteCardPopup({
     />
   );
 }
+
+DeleteCardPopup.propTypes = {
+  isOpen: PropTypes.bool,
+  isCard: PropTypes.object,
+  isLoadingButton: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  onDeleteCard: PropTypes.func.isRequired,
+  toggleEventListenerWindow: PropTypes.func.isRequired,
+};
 
 export default DeleteCardPopup;

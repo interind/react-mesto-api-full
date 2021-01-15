@@ -1,19 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
-import { MarkupForPopups } from './MarkupForPopups';
-
-
-Register.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
-  signOut: PropTypes.func.isRequired,
-  onRegister: PropTypes.func.isRequired,
-};
-
-Register.defaultProps = {
-  isOpen: false,
-};
+import MarkupForPopups from './MarkupForPopups';
 
 function Register({
   isOpen,
@@ -21,7 +9,13 @@ function Register({
   onRegister,
   isLoadingButton,
 }) {
-  const [register, setRegister] = React.useState({ password: '', email: '', name: '', about: '', avatar: '' });
+  const [register, setRegister] = React.useState({
+    password: '',
+    email: '',
+    name: '',
+    about: '',
+    avatar: '',
+  });
   const [activeButton, setActiveButton] = React.useState(true);
   const [validCheck, setValidCheck] = React.useState({});
   const textButton = isLoadingButton ? 'Проверка...' : 'Регистрация';
@@ -36,13 +30,10 @@ function Register({
   };
 
   function validationCheck(evt) {
-    !evt.target.validity.valid
-      ? setValidCheck({
-          [evt.target.name]: evt.target.validationMessage,
-        })
-      : setValidCheck({
-          [evt.target.name]: '',
-        });
+    if (!evt.target.validity.valid) {
+      setValidCheck({ [evt.target.name]: evt.target.validationMessage });
+    }
+    setValidCheck({ [evt.target.name]: '' });
   }
 
   function setRegisterUser(evt) {
@@ -50,9 +41,15 @@ function Register({
     setActiveButton(!evt.target.value);
   }
 
-
   function clearInput() {
-    setRegister({ ...register, password: '', email: '', name: '', about: '', avatar: '' });
+    setRegister({
+      ...register,
+      password: '',
+      email: '',
+      name: '',
+      about: '',
+      avatar: '',
+    });
   }
 
   function verifiesRegistration(evt) {
@@ -93,5 +90,16 @@ function Register({
     </React.Fragment>
   );
 }
+
+Register.propTypes = {
+  isOpen: PropTypes.bool,
+  isLoadingButton: PropTypes.bool,
+  signOut: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired,
+};
+
+Register.defaultProps = {
+  isOpen: false,
+};
 
 export default Register;

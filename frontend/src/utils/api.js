@@ -23,13 +23,8 @@ class Api {
   }
 
   register(arg) { // регистрация
-    let user = {};
-    let key;
-    for (key in arg) {
-      if (arg[key] !== '') {
-          user[key] = arg[key];
-      }
-    }
+    const user = Object.fromEntries(Object.entries(arg)
+      .filter(([key, value]) => [key, value][1] !== ''));
     return fetch(`${this._url}${this.auth}`, {
       method: 'POST',
       headers: {

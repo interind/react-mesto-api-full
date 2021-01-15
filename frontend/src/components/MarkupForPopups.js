@@ -2,8 +2,7 @@
 import React from 'react';
 import classes from 'classnames';
 
-
-export const MarkupForPopups = {
+export default {
   Avatar: function Avatar(props) {
     const inputValidClass = classes('popup__input', {
       popup__input_type_error: props.avatarUser,
@@ -198,7 +197,8 @@ export const MarkupForPopups = {
   },
   Register: function Register(props) {
     const inputValidClass = classes('popup__input popup__input_type_check', {
-      popup__input_type_error: (props.password || props.email || props.name || props.about || props.avatarUser),
+      popup__input_type_error:
+       (props.password || props.email || props.name || props.about || props.avatarUser),
     });
     return (
       <React.Fragment>
@@ -320,8 +320,7 @@ export const MarkupForPopups = {
     return (
       <div
         className={props.classTool}
-        onMouseDown={(evt) =>
-          evt.currentTarget === evt.target && props.onClose()
+        onMouseDown={(evt) => evt.currentTarget === evt.target && props.onClose()
         }
       >
         <div className='popup__container popup__container_type_tool'>

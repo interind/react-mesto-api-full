@@ -1,15 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
-import { MarkupForPopups } from './MarkupForPopups.js';
-
-EditAvatarPopup.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
-  onUpdateAvatar: PropTypes.func.isRequired,
-  toggleEventListenerWindow: PropTypes.func.isRequired,
-};
+import MarkupForPopups from './MarkupForPopups';
 
 function EditAvatarPopup({
   isLoadingButton,
@@ -39,9 +31,10 @@ function EditAvatarPopup({
   const [validAvatar, setValidAvatar] = React.useState('');
 
   function validationAvatar(evt) {
-    !evt.target.validity.valid
-      ? setValidAvatar(evt.target.validationMessage)
-      : setValidAvatar('');
+    if (!evt.target.validity.valid) {
+      setValidAvatar(evt.target.validationMessage);
+    }
+    setValidAvatar('');
   }
 
   function setAvatarUser(evt) {
@@ -77,5 +70,13 @@ function EditAvatarPopup({
     </PopupWithForm>
   );
 }
+
+EditAvatarPopup.propTypes = {
+  isOpen: PropTypes.bool,
+  isLoadingButton: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  onUpdateAvatar: PropTypes.func.isRequired,
+  toggleEventListenerWindow: PropTypes.func.isRequired,
+};
 
 export default EditAvatarPopup;
