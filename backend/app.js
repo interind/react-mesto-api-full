@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
@@ -35,12 +34,12 @@ app.use(routerCards);
 app.use(routerError);
 
 app.use(errorLogger); // log ошибок
-app.use((error, req, res, next) => {
-  if (res.headerSent) {
-    return next(res);
-  }
-  return next(error);
-});
+// app.use((error, req, res, next) => {
+//   if (res.headerSent) {
+//     return next(res);
+//   }
+//   next(error);
+// });
 app.use(errors()); // ошибки celebrate
 app.use(errorsResponse);
 
