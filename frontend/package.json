@@ -20,7 +20,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "dev": "npm run build && scp -r ./build/* interind@178.154.230.58:/home/interind/frontend"
   },
   "eslintConfig": {
     "extends": [
@@ -28,7 +29,6 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://localhost:5000",
   "browserslist": {
     "production": [
       ">0.2%",

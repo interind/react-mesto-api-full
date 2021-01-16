@@ -92,8 +92,8 @@ function App() {
     setLoading(true);
   }
 
-  function start(string) {
-    api.token = localStorage.getItem(string);
+  function start(token) {
+    api.token = token;
     Promise.all([api.getInfoForUser(), api.getInfoForCards()])
       .then(([dataUser, dataCards]) => {
         setCurrentUser({ ...dataUser });
@@ -127,7 +127,7 @@ function App() {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           handleLogin(evt);
-          start('jwt');
+          start(data.token);
           setOpenCheck(false);
           infoMessage('Добро пожаловать на проект Mesto', true);
         } else if (!data.token && data.message) {
@@ -328,9 +328,10 @@ function App() {
 
   React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
+      const token = localStorage.getItem('jwt');
       setLoading(true);
       setLoggedIn(true);
-      start('jwt');
+      start(token);
     } else {
       localStorage.clear();
     }
