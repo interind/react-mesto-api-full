@@ -328,10 +328,9 @@ function App() {
 
   React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      const token = localStorage.getItem('jwt');
       setLoading(true);
       setLoggedIn(true);
-      start(token);
+      start('jwt');
     } else {
       localStorage.clear();
     }
