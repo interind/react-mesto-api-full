@@ -22,9 +22,9 @@
 */yarn-debug.log*
 */yarn-error.log*
 
-*/.editorconfig
+
 */.eslintignore
-*/.eslintrc
+
 */.eslintrc.json
 
 # Logs
@@ -35,9 +35,9 @@
 # Optional npm cache directory
 */.npm
 */.env
-*/.eslintrc
+
 */.eslintignore
-*/.editorconfig
+
 
 # Optional REPL history
 */.DS_Store
