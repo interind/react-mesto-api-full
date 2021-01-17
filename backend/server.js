@@ -1,8 +1,8 @@
-/* eslint-disable no-console */
 require('dotenv').config();
 const mongoose = require('mongoose');
 const config = require('config');
 const app = require('./app.js');
+const { errorConsoleLogger } = require('./middlewares/logger.js');
 
 const mongodbUrl = config.get('mongodbUrl');
 const PORT = process.env.PORT || config.get('PORT');
@@ -20,7 +20,7 @@ async function start() {
       console.log(`the server is running at ${BASE_PATH}`);
     });
   } catch (err) {
-    console.error(err);
+    errorConsoleLogger(err);
     process.exitCode = 1;
   }
 }

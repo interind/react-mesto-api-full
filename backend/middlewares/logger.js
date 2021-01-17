@@ -18,7 +18,18 @@ const errorLogger = expressWinston.errorLogger({
   format: winston.format.json(),
 });
 
+const errorConsoleLogger = expressWinston.errorLogger({
+  transports: [
+    new winston.transports.File({
+      filename: 'errorConsole.log',
+      handleRejections: true,
+    }),
+  ],
+  format: winston.format.json(),
+});
+
 module.exports = {
   requestLogger,
   errorLogger,
+  errorConsoleLogger,
 };

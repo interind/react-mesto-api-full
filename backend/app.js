@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger.js');
 const { errorsResponse } = require('./middlewares/errors.js');
 const routerAuth = require('./routes/auth.js');
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
   next();
 });
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -34,12 +35,12 @@ app.use(routerCards);
 app.use(routerError);
 
 app.use(errorLogger); // log ошибок
-// app.use((error, req, res, next) => {
-//   if (res.headerSent) {
-//     return next(res);
-//   }
-//   next(error);
-// });
+app.use((error, req, res, next) => {
+  if (res.headerSent) {
+    return next(res);
+  }
+  return next(error);
+});
 app.use(errors()); // ошибки celebrate
 app.use(errorsResponse);
 
