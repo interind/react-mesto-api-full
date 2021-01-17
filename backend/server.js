@@ -6,7 +6,7 @@ const { errorConsoleLogger } = require('./middlewares/logger.js');
 
 const mongodbUrl = config.get('mongodbUrl');
 const PORT = process.env.PORT || config.get('PORT');
-const BASE_PATH = `http://localhost:${PORT}`;
+const BASE_PATH = `Port:${PORT}`;
 
 async function start() {
   try {
