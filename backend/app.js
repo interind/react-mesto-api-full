@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const config = require('config');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger.js');
 const { errorsResponse } = require('./middlewares/errors.js');
@@ -9,10 +10,22 @@ const routerUsers = require('./routes/users.js');
 const routerCards = require('./routes/cards.js');
 const routerError = require('./routes/error.js');
 
+const PORT = process.env.PORT || config.get('PORT');
+const BASE_PATH = `http://localhost:${PORT}`;
 const app = express();
 app.disable('x-powered-by');
 
 app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', `${BASE_PATH}`);
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+
+  next();
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
