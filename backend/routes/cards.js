@@ -17,7 +17,7 @@ router.post('/cards',
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30).regex(regProfile)
         .required(),
-      link: Joi.string().regex(regHttp).regex(regProfile).required(),
+      link: Joi.string().regex(regHttp).required(),
     }),
   }), createCard);
 router.delete('/cards/:cardId', auth, deleteCard);
