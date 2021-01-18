@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { regHttp } = require('../utils/reg.ext');
+const { regHttp, regProfile } = require('../utils/reg.ext');
 const auth = require('../middlewares/auth.js');
 const {
   getUser,
@@ -17,8 +17,10 @@ router.patch('/users/me',
   auth,
   celebrate({
     body: Joi.object().keys({
-      name: Joi.string().min(2).max(30).required(),
-      about: Joi.string().min(2).max(30).required(),
+      name: Joi.string().min(2).max(30).regex(regProfile)
+        .required(),
+      about: Joi.string().min(2).max(30).regex(regProfile)
+        .required(),
     }),
   }), updateUser);
 

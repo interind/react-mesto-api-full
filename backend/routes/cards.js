@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { regHttp } = require('../utils/reg.ext');
+const { regHttp, regProfile } = require('../utils/reg.ext');
 const auth = require('../middlewares/auth.js');
 const {
   getCards,
@@ -15,8 +15,9 @@ router.post('/cards',
   auth,
   celebrate({
     body: Joi.object().keys({
-      name: Joi.string().min(2).max(30).required(),
-      link: Joi.string().regex(regHttp).required(),
+      name: Joi.string().min(2).max(30).regex(regProfile)
+        .required(),
+      link: Joi.string().regex(regHttp).regex(regProfile).required(),
     }),
   }), createCard);
 router.delete('/cards/:cardId', auth, deleteCard);
