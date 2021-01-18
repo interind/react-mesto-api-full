@@ -51,12 +51,12 @@ userSchema.statics.findUserByCredentials = async function (email, password, next
   try {
     const user = await this.findOne({ email }).select('+password');
     if (!user) {
-      return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
+      return Promise.reject(createError.Unauthorized('Неправильные почта или пароль'));
     }
     try {
       const matched = await bcrypt.compare(password, user.password);
       if (!matched) {
-        return Promise.reject(createError(config.get('Unauthorized'), 'Неправильные почта или пароль'));
+        return Promise.reject(createError.Unauthorized('Неправильные почта или пароль'));
       }
       return user;
     } catch (err) {

@@ -6,12 +6,12 @@ module.exports.errorsResponse = (error, req, res, next) => {
       message: error.message,
     }).setHeader('Content-Type', 'application/json');
   } else if (error.code === 11000) {
-    res.status(config.get('ValidationError')).send({
-      message: error.message, error,
+    res.status(config.get('CastError')).send({
+      message: error.message,
     }).setHeader('Content-Type', 'application/json');
   }
   res.status(error.status || config.get('default')).send({
-    message: error.message, error,
+    message: error.message,
   }).setHeader('Content-Type', 'application/json');
   next();
 };

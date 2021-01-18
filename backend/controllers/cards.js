@@ -27,7 +27,7 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       if ((!card || card.owner.toString() !== req.user._id)) {
-        return Promise.reject(new createError.NotFound('такой карточки нет'));
+        return Promise.reject(createError.BadRequest('такой карточки нет'));
       }
       card.remove();
       return res.send({ message: 'карточка удалена' });
@@ -45,7 +45,7 @@ module.exports.likeCard = (req, res, next) => {
       if (card) {
         return res.send(card);
       }
-      return Promise.reject(new createError.NotFound('такой карточки нет'));
+      return Promise.reject(createError.NotFound('такой карточки нет'));
     })
     .catch(next);
 };
@@ -60,7 +60,7 @@ module.exports.dislikeCard = (req, res, next) => {
       if (card) {
         return res.send(card);
       }
-      return Promise.reject(new createError.NotFound('такой карточки нет'));
+      return Promise.reject(createError.NotFound('такой карточки нет'));
     })
     .catch(next);
 };
