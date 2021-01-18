@@ -11,24 +11,8 @@ const {
 } = require('../controllers/users.js');
 
 router.get('/users', auth, getUsers);
-
-router.get(
-  '/users/me',
-  auth,
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
-      avatar: Joi.string().regex(regHttp),
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(6),
-    }).unknown(),
-  }),
-  getUser,
-);
-
+router.get('/users/me', auth, getUser);
 router.get('/users/:userId', auth, getUserId);
-
 router.patch('/users/me',
   auth,
   celebrate({
