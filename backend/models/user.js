@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => regHttp.test(v),
+      message: 'Ошибка в ссылке Аватара',
     },
-    message: 'Ошибка в ссылке Аватара',
   },
   email: {
     type: String,
@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: (v) => isEmail(v),
+      message: 'Некорректный email',
     },
-    message: 'Некорректный email',
   },
   password: {
     type: String,

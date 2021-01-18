@@ -39,6 +39,17 @@ module.exports.getUser = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.getUserId = (req, res, next) => {
+  User.findById(req.params.userId)
+    .then((user) => {
+      if (user) {
+        return res.send({ data: user });
+      }
+      throw createError(config.get('doNotFind'), 'Такого пользователя нет!❌');
+    })
+    .catch(next);
+};
+
 module.exports.createUser = (req, res, next) => {
   const {
     name,
@@ -59,8 +70,9 @@ module.exports.createUser = (req, res, next) => {
       User.findById(_id)
         .then((user) => {
           if (!user) {
-            throw Error;
+            throw createError(config.get('ValidationError'), 'Ошибка регистрации!❌');
           }
+          user.save();
           return res.send({ data: user });
         })
         .catch(next);

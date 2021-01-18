@@ -14,8 +14,8 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => regHttp.test(v),
+      message: 'Ошибка в ссылке Карточки',
     },
-    message: 'Ошибка в ссылке Карточки',
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

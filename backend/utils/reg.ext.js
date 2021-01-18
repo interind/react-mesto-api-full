@@ -1,1 +1,1 @@
-module.exports.regHttp = /^(https?:\/\/)[--Z0-9+&@$#%?=_|)\][(!:',.;]*#?$/gim;
+module.exports.regHttp = /^(https?:\/\/)[--z0-9+&@$#%?=_|)\][(!:',.;]*#?$/;

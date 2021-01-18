@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const { regHttp } = require('../utils/reg.ext');
 
 const {
   login,
@@ -12,7 +13,7 @@ router.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().regex(/^(https?:\/\/).*#?$/),
+      avatar: Joi.string().regex(regHttp),
       email: Joi.string().required().email(),
       password: Joi.string().required().min(6),
     }).unknown(),

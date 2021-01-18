@@ -17,6 +17,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.use(routerAuth);
 app.use(routerUsers);
@@ -24,13 +29,8 @@ app.use(routerCards);
 app.use(routerError);
 
 app.use(errorLogger); // log ошибок
-app.use((error, req, res, next) => {
-  if (res.headerSent) {
-    return next(res);
-  }
-  return next(error);
-});
-app.use(errors()); // ошибки celebrate
+app.use(errors());
+
 app.use(errorsResponse);
 
 module.exports = app;

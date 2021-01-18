@@ -22,7 +22,7 @@ const errorConsoleLogger = expressWinston.errorLogger({
   transports: [
     new winston.transports.File({
       filename: 'errorConsole.log',
-      handleRejections: true,
+      handleExceptions: true,
     }),
   ],
   format: winston.format.json(),
