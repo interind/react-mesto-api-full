@@ -32,7 +32,7 @@ module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        return Promise.reject(new createError.NotFound('Такого пользователя нет!❌'));
+        return Promise.reject(createError.NotFound('Такого пользователя нет!❌'));
       }
       return res.send(user);
     })
@@ -45,7 +45,7 @@ module.exports.getUserId = (req, res, next) => {
       if (user) {
         return res.send({ data: user });
       }
-      throw createError(config.get('doNotFind'), 'Такого пользователя нет!❌');
+      return next(createError.NotFound('Такого пользователя нет!❌'));
     })
     .catch(next);
 };
@@ -70,9 +70,8 @@ module.exports.createUser = (req, res, next) => {
       User.findById(_id)
         .then((user) => {
           if (!user) {
-            throw createError(config.get('ValidationError'), 'Ошибка регистрации!❌');
+            return next(createError.Unauthorized('Ошибка регистрации!❌'));
           }
-          user.save();
           return res.send({ data: user });
         })
         .catch(next);

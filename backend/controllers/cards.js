@@ -27,7 +27,7 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       if ((!card || card.owner.toString() !== req.user._id)) {
-        return Promise.reject(createError.BadRequest('такой карточки нет'));
+        return Promise.reject(createError.NotFound('Ошибка прав доступа'));
       }
       card.remove();
       return res.send({ message: 'карточка удалена' });
