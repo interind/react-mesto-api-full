@@ -219,7 +219,10 @@ function App() {
     api
       .updateUserInfo({ name, about })
       .then((infoUser) => {
-        setCurrentUser({
+        if (!infoUser || infoUser.error) {
+          return Promise.reject(new Error('ошибка данных'));
+        }
+        return setCurrentUser({
           ...currentUser,
           name: infoUser.name,
           about: infoUser.about,
@@ -238,7 +241,10 @@ function App() {
     api
       .updateUserAvatar({ avatar })
       .then((infoAvatar) => {
-        setCurrentUser({ ...currentUser, avatar: infoAvatar.avatar });
+        if (!infoAvatar || infoAvatar.error) {
+          return Promise.reject(new Error('ошибка данных'));
+        }
+        return setCurrentUser({ ...currentUser, avatar: infoAvatar.avatar });
       })
       .catch((err) => console.error('Информация обновления пользователя с ошибкой', err))
       .finally(() => {
