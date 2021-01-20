@@ -12,19 +12,16 @@ const userSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
     default: config.get('userName'),
-    required: true,
   },
   about: {
     type: String,
     minlength: 2,
     maxlength: 30,
     default: config.get('userAbout'),
-    required: true,
   },
   avatar: {
     type: String,
     default: config.get('avatar'),
-    required: true,
     validate: {
       validator: (v) => regHttp.test(v),
       message: 'Ошибка в ссылке Аватара',
