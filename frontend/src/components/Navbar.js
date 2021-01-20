@@ -21,7 +21,7 @@ function Navbar({
 
   React.useEffect(() => {
     if (history.location.pathname === '/sign-up') {
-      setTitle('Вход');
+      setTitle('Войти');
     } else if (history.location.pathname === '/sign-in') {
       setTitle('Регистрация');
     } else if (history.location.pathname === '/') {
