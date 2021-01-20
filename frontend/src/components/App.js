@@ -97,7 +97,8 @@ function App() {
     Promise.all([api.getInfoForUser(), api.getInfoForCards()])
       .then(([dataUser, dataCards]) => {
         if (!(dataUser && dataCards) || (dataUser.error && dataCards.error)) {
-          Promise.reject(new Error('ошибка данных'));
+          setError({ ...statusError, message: 'ошибка данных' });
+          return Promise.reject(new Error('ошибка данных'));
         }
         setCurrentUser({ ...dataUser });
         setCards([...dataCards]);
@@ -105,7 +106,8 @@ function App() {
           info: '',
           link: '/sign-up',
         });
-        setIsOk(true);
+        setError(null);
+        return setIsOk(true);
       })
       .catch((err) => {
         console.error('Информация сервера с ошибкой', err.message);
@@ -191,6 +193,7 @@ function App() {
           avatar: '',
           email: '',
         });
+        setError(null);
         handleLogOut(evt);
         history.push('/sign-in');
       } else {
@@ -223,8 +226,10 @@ function App() {
       .updateUserInfo({ name, about })
       .then((infoUser) => {
         if (!infoUser || infoUser.error) {
+          setError({ ...statusError, message: 'ошибка данных' });
           return Promise.reject(new Error('ошибка данных'));
         }
+        setError(null);
         return setCurrentUser({
           ...currentUser,
           name: infoUser.name,
@@ -245,8 +250,10 @@ function App() {
       .updateUserAvatar({ avatar })
       .then((infoAvatar) => {
         if (!infoAvatar || infoAvatar.error) {
+          setError({ ...statusError, message: 'ошибка данных' });
           return Promise.reject(new Error('ошибка данных'));
         }
+        setError(null);
         return setCurrentUser({ ...currentUser, avatar: infoAvatar.avatar });
       })
       .catch((err) => console.error('Информация обновления пользователя с ошибкой', err))
@@ -262,9 +269,11 @@ function App() {
     api
       .addCard({ name, link })
       .then((newCard) => {
-        if (!newCard) {
+        if (!newCard || newCard.error) {
+          setError({ ...statusError, message: 'ошибка данных' });
           return Promise.reject(new Error('ошибка данных'));
         }
+        setError(null);
         return setCards([newCard, ...cards]);
       })
       .catch((err) => console.error('Информация обновления карточки с ошибкой', err))
@@ -313,8 +322,10 @@ function App() {
       .deleteCard(_id)
       .then((res) => {
         if (res.error) {
+          setError({ ...statusError, message: 'ошибка данных' });
           return Promise.reject(new Error('ошибка данных'));
         }
+        setError(null);
         return setCards(cards.filter((card) => card._id !== idCard));
       })
       .catch((err) => console.error('Информация по карточкам с ошибкой', err.message))
@@ -371,6 +382,7 @@ function App() {
               signOut={signOut}
               toggleNavbar={toggleNavbar}
             />
+            {statusError && <ErrorPage error={statusError} />}
             <InfoTooltip
               isOpen={isTooltip}
               onClose={closeAllPopups}
@@ -425,7 +437,11 @@ function App() {
                     toggleEventListenerWindow={toggleEventListenerWindow}
                   />
                 </React.Fragment>
-              {!statusOk && <ErrorPage error={statusError} />}
+              {!statusOk && (
+              <div className='page__elements'>
+                <ErrorPage error={statusError} message={'попробуйте позже'} />
+              </div>
+              )}
               </ProtectedRoute>
               {!loading && (
                 <Route path='/sign-in' exact>
