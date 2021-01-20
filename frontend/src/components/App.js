@@ -96,6 +96,9 @@ function App() {
     api.token = localStorage.getItem(string);
     Promise.all([api.getInfoForUser(), api.getInfoForCards()])
       .then(([dataUser, dataCards]) => {
+        if (!(dataUser && dataCards) || (dataUser.error && dataCards.error)) {
+          Promise.reject(new Error('ошибка данных'));
+        }
         setCurrentUser({ ...dataUser });
         setCards([...dataCards]);
         setUserAuthInfo({
@@ -308,8 +311,11 @@ function App() {
     setButtonLoading(true);
     api
       .deleteCard(_id)
-      .then(() => {
-        setCards(cards.filter((card) => card._id !== idCard));
+      .then((res) => {
+        if (res.error) {
+          return Promise.reject(new Error('ошибка данных'));
+        }
+        return setCards(cards.filter((card) => card._id !== idCard));
       })
       .catch((err) => console.error('Информация по карточкам с ошибкой', err.message))
       .finally(() => {
