@@ -4,7 +4,7 @@
   "avatar": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
   "userName": "Жак-Ив Кусто",
   "userAbout": "Исследователь",
-  "PORT": 5000,
+  "PORT": 3000,
   "CastError": 400,
   "default": 500
 }
