@@ -15,5 +15,5 @@
 
 .element__button-trash:hover {
   cursor: pointer;
-  opacity: 0.6;
+  opacity: .6;
 }

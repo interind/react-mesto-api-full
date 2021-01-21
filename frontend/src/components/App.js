@@ -204,7 +204,7 @@ function App() {
     } else if (evt.target.text === 'Регистрация') {
       history.push('/sign-up');
       setUserAuthInfo({ ...userAuthInfo, link: '/sign-in' });
-    } else if (evt.target.text === 'Вход') {
+    } else if (evt.target.text === 'Войти') {
       history.push('/sign-in');
       setUserAuthInfo({ ...userAuthInfo, link: '/sign-up' });
     }
