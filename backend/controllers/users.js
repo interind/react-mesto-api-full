@@ -23,7 +23,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.deleteUser = (req, res, next) => {
-  User.findById(req.params.cardId)
+  User.findById(req.params.userId)
     .then((user) => {
       if ((!user)) {
         return Promise.reject(createError.NotFound('Его тут нет'));
