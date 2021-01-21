@@ -6,6 +6,7 @@ const {
   getUser,
   getUsers,
   getUserId,
+  deleteUser,
   updateUser,
   updateUserAvatar,
 } = require('../controllers/users.js');
@@ -37,5 +38,13 @@ router.patch('/users/me/avatar',
       avatar: Joi.string().regex(regHttp).required(),
     }),
   }), updateUserAvatar);
+
+router.delete('/users/:userId',
+  auth,
+  celebrate({
+    params: Joi.object().keys({
+      userId: Joi.string().length(24).hex().required(),
+    }),
+  }), deleteUser);
 
 module.exports = router;
