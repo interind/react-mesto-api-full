@@ -129,7 +129,7 @@ class Api {
 }
 
 const api = new Api({
-  url: 'https://api.interind.students.nomoreparties.xyz/',
+  url: '/',
   user: 'users/me',
   cards: 'cards',
   login: 'signin',
