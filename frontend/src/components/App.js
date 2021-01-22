@@ -88,6 +88,7 @@ function App() {
   function handleLogin(evt) {
     evt.preventDefault();
     history.push('/');
+    setUserAuthInfo({ ...userAuthInfo, link: '/sign-in' });
     setLoggedIn(true);
     setLoading(true);
   }
@@ -104,7 +105,7 @@ function App() {
         setCards([...dataCards]);
         setUserAuthInfo({
           info: '',
-          link: '/sign-up',
+          link: '/sign-in',
         });
         setError(null);
         return setIsOk(true);
@@ -196,10 +197,12 @@ function App() {
         setError(null);
         handleLogOut(evt);
         history.push('/sign-in');
+        setUserAuthInfo({ ...userAuthInfo, link: '/sign-up' });
       } else {
         localStorage.clear();
         handleLogOut(evt);
         history.push('/sign-in');
+        setUserAuthInfo({ ...userAuthInfo, link: '/sign-up' });
       }
     } else if (evt.target.text === 'Регистрация') {
       history.push('/sign-up');
