@@ -5,12 +5,11 @@ const app = require('./app.js');
 const { errorConsoleLogger } = require('./middlewares/logger.js');
 
 const PORT = process.env.PORT || config.get('PORT');
-const mongoUrl = process.env.MONGO || config.get('mongodbUrl');
 const BASE_PATH = `Port:${PORT}`;
 
 async function start() {
   try {
-    await mongoose.connect(mongoUrl, {
+    await mongoose.connect(config.get('mongodbUrl'), {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
