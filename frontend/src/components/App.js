@@ -359,6 +359,16 @@ function App() {
     }
   }, []);
 
+  React.useLayoutEffect(() => {
+    if (history.location.pathname === '/sign-in') {
+      document.title = 'Авторизация';
+    } else if (history.location.pathname === '/sign-up') {
+      document.title = 'Регистрация';
+    } else if (history.location.pathname === '/') {
+      document.title = 'Mesto';
+    }
+  });
+
   return (
     <React.Fragment>
     {loggedIn

@@ -23,7 +23,7 @@ function PopupWithForm({
   const classButtonSubmit = classes('popup__button-submit', {
     'popup__button-submit_type_check': name === 'check',
     'popup__button-submit_type_register': userAuthInfo,
-    'popup__button-submit_disabled': active && name !== 'check',
+    'popup__button-submit_disabled': active,
   });
 
   return (
