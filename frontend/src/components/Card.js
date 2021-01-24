@@ -9,18 +9,17 @@ function Card({
   onCardLike,
 }) {
   const { _id } = React.useContext(CurrentUserContext);
-  const [visible, setVisible] = React.useState(true);
+  const [visible, setVisible] = React.useState(card.link);
 
   return (
     <React.Fragment>
-      {visible && (
         <div className='element'>
           <img
-            src={card.link}
+            src={visible}
             alt={card.name}
             className='element__pic'
             onError={() => {
-              setVisible(false);
+              setVisible('/static/media/errorPic.b39bbd5d.jpg');
             }}
             onClick={() => onCardClick(card)}
           />
@@ -60,7 +59,6 @@ function Card({
             )}
           </div>
         </div>
-      )}
     </React.Fragment>
   );
 }
