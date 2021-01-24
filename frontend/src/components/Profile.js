@@ -9,14 +9,16 @@ function ProfileUser({ onAddPlace, onEditAvatar, onEditProfile }) {
     avatar,
     _id,
   } = React.useContext(CurrentUserContext);
+  const [link, setLink] = React.useState(avatar);
 
   return (
    <section className='profile page__profile'>
      <img
        id={_id}
-       src={avatar}
+       src={link}
        alt='Аватарка'
        onClick={onEditAvatar}
+       onError={() => setLink('/static/media/unnamed.a278c1b7.png')}
        className='profile__avatar'
      />
      <div className='profile__info'>
