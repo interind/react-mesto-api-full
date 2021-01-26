@@ -6,8 +6,8 @@ module.exports.errorsResponse = (error, req, res, next) => {
       message: error.message,
     }).setHeader('Content-Type', 'application/json');
   } else if (error.code === 11000) {
-    res.status(config.get('CastError')).send({
-      message: error.message,
+    res.status(config.get('conflict')).send({
+      message: 'Такой пользователь уже существует',
     }).setHeader('Content-Type', 'application/json');
   }
   res.status(error.status || config.get('default')).send({

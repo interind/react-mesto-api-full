@@ -18,7 +18,7 @@
   cursor: url(../../../images/profile/cursor.png) 2 2, pointer;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 350px) {
   .profile__avatar {
     margin-bottom: 14px;
   }

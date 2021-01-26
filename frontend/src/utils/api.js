@@ -15,7 +15,7 @@ class Api {
   }
 
   _getResponse(res) {
-    const status = [200, 400, 401];
+    const status = [200, 400, 401, 409];
     if (status.includes(res.status)) {
       return res.json();
     }
@@ -129,7 +129,7 @@ class Api {
 }
 
 const api = new Api({
-  url: '/',
+  url: 'https://api.interind.students.nomoreparties.xyz/',
   user: 'users/me',
   cards: 'cards',
   login: 'signin',
