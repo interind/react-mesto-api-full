@@ -93,6 +93,15 @@ function App() {
     setLoading(true);
   }
 
+  function imagesCheck(link) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = link;
+      image.onload = () => resolve();
+      image.onerror = () => reject();
+    });
+  }
+
   function start(string) {
     api.token = localStorage.getItem(string);
     Promise.all([api.getInfoForUser(), api.getInfoForCards()])
@@ -417,12 +426,14 @@ function App() {
                   <AddPlacePopup
                     isOpen={isAddPlacePopupOpen}
                     isLoadingButton={buttonLoading}
+                    imagesCheck={imagesCheck}
                     onClose={closeAllPopups}
                     onAddPlace={handleAddPlace}
                     toggleEventListenerWindow={toggleEventListenerWindow}
                   />
                   <EditAvatarPopup
                     isOpen={isEditAvatarPopupOpen}
+                    imagesCheck={imagesCheck}
                     isLoadingButton={buttonLoading}
                     onClose={closeAllPopups}
                     onUpdateAvatar={handleUpdateAvatar}

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
-import imagesCheck from '../utils/utils';
 
 function EditAvatarPopup({
   isLoadingButton,
   isOpen,
   onClose,
+  imagesCheck,
   onUpdateAvatar,
   toggleEventListenerWindow,
 }) {
@@ -27,15 +27,15 @@ function EditAvatarPopup({
     buttonTitle: `${textButton}`,
   };
 
-  const [avatarUser, setAvatar] = React.useState('');
+  const [avatar, setAvatar] = React.useState('');
   const [activeButton, setActiveButton] = React.useState(true);
   const [validAvatar, setValidAvatar] = React.useState('');
 
   function validationAvatar(evt) {
     if (!evt.target.validity.valid) {
-      setValidAvatar(evt.target.validationMessage);
+      return setValidAvatar(evt.target.validationMessage);
     }
-    setValidAvatar('');
+    return setValidAvatar('');
   }
 
   function setAvatarUser(evt) {
@@ -45,11 +45,11 @@ function EditAvatarPopup({
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    imagesCheck(avatarUser)
+    imagesCheck(avatar)
       .then(() => {
         setAvatar('');
         onUpdateAvatar({
-          avatar: avatarUser,
+          avatar,
         });
       })
       .catch(() => {
@@ -67,7 +67,7 @@ function EditAvatarPopup({
       active={activeButton}
       onSubmit={handleSubmit}>
       <MarkupForPopups.Avatar
-        avatarUser={avatarUser}
+        avatar={avatar}
         editAvatar={setAvatarUser}
         avatarMessage={validAvatar}
         validationAvatar={validationAvatar}
@@ -80,6 +80,7 @@ EditAvatarPopup.propTypes = {
   isOpen: PropTypes.bool,
   isLoadingButton: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
+  imagesCheck: PropTypes.func.isRequired,
   onUpdateAvatar: PropTypes.func.isRequired,
   toggleEventListenerWindow: PropTypes.func.isRequired,
 };

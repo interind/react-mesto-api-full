@@ -28,9 +28,9 @@ function Login({
 
   function validationCheck(evt) {
     if (!evt.target.validity.valid) {
-      setValidCheck({ [evt.target.name]: evt.target.validationMessage });
+      return setValidCheck({ [evt.target.name]: evt.target.validationMessage });
     }
-    setValidCheck({ [evt.target.name]: '' });
+    return setValidCheck({ [evt.target.name]: '' });
   }
 
   function setPasswordUser(evt) {

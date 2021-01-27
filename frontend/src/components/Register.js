@@ -31,9 +31,9 @@ function Register({
 
   function validationCheck(evt) {
     if (!evt.target.validity.valid) {
-      setValidCheck({ [evt.target.name]: evt.target.validationMessage });
+      return setValidCheck({ [evt.target.name]: evt.target.validationMessage });
     }
-    setValidCheck({ [evt.target.name]: '' });
+    return setValidCheck({ [evt.target.name]: '' });
   }
 
   function setRegisterUser(evt) {
@@ -75,7 +75,7 @@ function Register({
             about={register.about}
             email={register.email}
             name={register.name}
-            avatarUser={register.avatar}
+            avatar={register.avatar}
             password={register.password}
             placeMessage={validCheck}
             editEmail={setRegisterUser}

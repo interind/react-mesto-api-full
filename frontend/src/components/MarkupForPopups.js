@@ -1,11 +1,17 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import classes from 'classnames';
+import PropTypes from 'prop-types';
 
 export default {
   Avatar: function Avatar(props) {
+    Avatar.propTypes = {
+      avatar: PropTypes.string.isRequired,
+      editAvatar: PropTypes.func.isRequired,
+      validationAvatar: PropTypes.func.isRequired,
+      avatarMessage: PropTypes.string,
+    };
     const inputValidClass = classes('popup__input', {
-      popup__input_type_error: props.avatarUser,
+      popup__input_type_error: props.avatar,
     });
     return (
       <React.Fragment>
@@ -15,7 +21,7 @@ export default {
           placeholder='Ссылка на картинку'
           id='input-avatar'
           name='avatar'
-          value={props.avatarUser}
+          value={props.avatar}
           onChange={props.editAvatar}
           onInput={props.validationAvatar}
           required
@@ -34,6 +40,14 @@ export default {
     );
   },
   Profile: function Profile(props) {
+    Profile.propTypes = {
+      about: PropTypes.string.isRequired,
+      nameProfile: PropTypes.string.isRequired,
+      editName: PropTypes.func.isRequired,
+      editAbout: PropTypes.func.isRequired,
+      validationProfile: PropTypes.func.isRequired,
+      profileMessage: PropTypes.object.isRequired,
+    };
     const inputValidClass = classes('popup__input', {
       popup__input_type_error: props.nameProfile || props.about,
     });
@@ -89,6 +103,14 @@ export default {
     );
   },
   Place: function Place(props) {
+    Place.propTypes = {
+      place: PropTypes.string.isRequired,
+      link: PropTypes.string.isRequired,
+      editPlace: PropTypes.func.isRequired,
+      editLink: PropTypes.func.isRequired,
+      validationPlace: PropTypes.func.isRequired,
+      placeMessage: PropTypes.object.isRequired,
+    };
     const inputValidClass = classes('popup__input', {
       popup__input_type_error: props.place || props.link,
     });
@@ -142,6 +164,14 @@ export default {
     );
   },
   Login: function Login(props) {
+    Login.propTypes = {
+      password: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      editEmail: PropTypes.func.isRequired,
+      editPassword: PropTypes.func.isRequired,
+      validationCheck: PropTypes.func.isRequired,
+      placeMessage: PropTypes.object.isRequired,
+    };
     const inputValidClass = classes('popup__input popup__input_type_check', {
       popup__input_type_error: props.password || props.email,
     });
@@ -196,9 +226,23 @@ export default {
     );
   },
   Register: function Register(props) {
+    Register.propTypes = {
+      email: PropTypes.string.isRequired,
+      about: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      avatar: PropTypes.string.isRequired,
+      password: PropTypes.string.isRequired,
+      editName: PropTypes.func.isRequired,
+      editAbout: PropTypes.func.isRequired,
+      editEmail: PropTypes.func.isRequired,
+      editPassword: PropTypes.func.isRequired,
+      editAvatar: PropTypes.func.isRequired,
+      validationCheck: PropTypes.func.isRequired,
+      placeMessage: PropTypes.object.isRequired,
+    };
     const inputValidClass = classes('popup__input popup__input_type_check', {
       popup__input_type_error:
-       (props.password || props.email || props.name || props.about || props.avatarUser),
+       (props.password || props.email || props.name || props.about || props.avatar),
     });
     return (
       <React.Fragment>
@@ -299,7 +343,7 @@ export default {
           placeholder='Ссылка на аватарку'
           id='input-avatar'
           name='avatar'
-          value={props.avatarUser}
+          value={props.avatar}
           onChange={props.editAvatar}
           onInput={props.validationCheck}
         />
@@ -317,6 +361,13 @@ export default {
     );
   },
   Tool: function Tool(props) {
+    Tool.propTypes = {
+      classTool: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired,
+      alt: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      onClose: PropTypes.func.isRequired,
+    };
     return (
       <div
         className={props.classTool}

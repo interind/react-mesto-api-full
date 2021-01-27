@@ -37,9 +37,9 @@ function EditProfilePopup({
 
   function validationProfile(evt) {
     if (!evt.target.validity.valid) {
-      setValidProfile({ [evt.target.name]: evt.target.validationMessage });
+      return setValidProfile({ [evt.target.name]: evt.target.validationMessage });
     }
-    setValidProfile({ [evt.target.name]: '' });
+    return setValidProfile({ [evt.target.name]: '' });
   }
 
   React.useEffect(() => {

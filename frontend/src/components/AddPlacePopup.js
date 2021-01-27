@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
-import imagesCheck from '../utils/utils';
 
 function AddPlacePopup({
   isLoadingButton,
   isOpen,
+  imagesCheck,
   onClose,
   onAddPlace,
   toggleEventListenerWindow,
@@ -38,11 +38,11 @@ function AddPlacePopup({
 
   function validationPlace(evt) {
     if (!evt.target.validity.valid) {
-      setValidPlace({
+      return setValidPlace({
         [evt.target.name]: evt.target.validationMessage,
       });
     }
-    setValidPlace({ [evt.target.name]: '' });
+    return setValidPlace({ [evt.target.name]: '' });
   }
 
   function setPlaceName(evt) {
@@ -92,6 +92,7 @@ function AddPlacePopup({
 AddPlacePopup.propTypes = {
   isOpen: PropTypes.bool,
   isLoadingButton: PropTypes.bool,
+  imagesCheck: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onAddPlace: PropTypes.func.isRequired,
   toggleEventListenerWindow: PropTypes.func.isRequired,
