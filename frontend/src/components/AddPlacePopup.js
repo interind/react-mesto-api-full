@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
+import imagesCheck from '../utils/utils';
 
 function AddPlacePopup({
   isLoadingButton,
@@ -54,12 +55,18 @@ function AddPlacePopup({
   }
   function handleSubmit(evt) {
     evt.preventDefault();
-    setPlace('');
-    setLink('');
-    onAddPlace({
-      name: namePlace,
-      link,
-    });
+    imagesCheck(link)
+      .then(() => {
+        setPlace('');
+        setLink('');
+        onAddPlace({
+          name: namePlace,
+          link,
+        });
+      })
+      .catch(() => {
+        setValidPlace({ ...validPlace, link: 'ошибка ссылки' });
+      });
   }
   return (
     <PopupWithForm

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
+import imagesCheck from '../utils/utils';
 
 function EditAvatarPopup({
   isLoadingButton,
@@ -44,12 +45,16 @@ function EditAvatarPopup({
 
   function handleSubmit(evt) {
     evt.preventDefault();
-
-    setAvatar('');
-
-    onUpdateAvatar({
-      avatar: avatarUser,
-    });
+    imagesCheck(avatarUser)
+      .then(() => {
+        setAvatar('');
+        onUpdateAvatar({
+          avatar: avatarUser,
+        });
+      })
+      .catch(() => {
+        setValidAvatar('ошибка ссылки');
+      });
   }
 
   return (
