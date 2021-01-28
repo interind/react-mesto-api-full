@@ -4,7 +4,7 @@
   line-height: 1.25;
   font-weight: normal;
   font-style: normal;
-  font-family: initial;
+  font-family: inherit;
   color: #f00;
   align-self: flex-start;
 }

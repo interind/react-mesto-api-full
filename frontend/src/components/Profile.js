@@ -12,10 +12,9 @@ function ProfileUser({ onAddPlace, onEditAvatar, onEditProfile }) {
 
   return (
    <section className='profile page__profile'>
-     <img
+     <div
        id={_id}
-       src={avatar}
-       alt='Аватарка'
+       style={{ backgroundImage: `url(${avatar})` }}
        onClick={onEditAvatar}
        className='profile__avatar'
      />
