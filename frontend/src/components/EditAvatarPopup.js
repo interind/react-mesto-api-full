@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
+import imagesCheck from '../utils/utils';
 
 function EditAvatarPopup({
   isLoadingButton,
   isOpen,
   onClose,
-  imagesCheck,
   onUpdateAvatar,
   toggleEventListenerWindow,
 }) {
@@ -52,8 +52,8 @@ function EditAvatarPopup({
           avatar,
         });
       })
-      .catch(() => {
-        setValidAvatar('ошибка ссылки');
+      .catch((err) => {
+        setValidAvatar(err.message);
       });
   }
 
@@ -80,7 +80,6 @@ EditAvatarPopup.propTypes = {
   isOpen: PropTypes.bool,
   isLoadingButton: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
-  imagesCheck: PropTypes.func.isRequired,
   onUpdateAvatar: PropTypes.func.isRequired,
   toggleEventListenerWindow: PropTypes.func.isRequired,
 };
