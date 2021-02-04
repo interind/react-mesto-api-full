@@ -13,13 +13,13 @@
   background-color: #000;
   color: #fff;
   border-radius: 2px;
-  border-color: #000;
+  border-color: transparent;
   margin-top: 13.11%;/*48*/
 }
 
 .popup__button-submit:hover {
- opacity: .8;
- cursor: pointer;
+  opacity: .8;
+  cursor: pointer;
 }
 
 @media screen and (max-height: 414px) {
@@ -30,6 +30,6 @@
 
 @media screen and (max-width: 320px) {
   .popup__button-submit {
-   margin-top: 18%;/*36*/
+    margin-top: 18%;/*36*/
   }
 }
