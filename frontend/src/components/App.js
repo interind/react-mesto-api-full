@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Route,
   Switch,
-  Redirect,
   useHistory,
 } from 'react-router-dom';
 import api from '../utils/api';
@@ -41,9 +40,9 @@ function App() {
     email: '',
   }); // тут информация обо мне с сервера
   const [cards, setCards] = React.useState([]); // тут информация о карточках
-  const [loading, setLoading] = React.useState(false); // лоадер при загрузке страницы
   const [statusOk, setIsOk] = React.useState(true); // флаг для ошибки сервера
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loading, setLoading] = React.useState(false); // лоадер при загрузке страницы
 
   const [statusError, setError] = React.useState({}); // флаг для ошибки сервера
   const [isOpenCard, setOpenCard] = React.useState(false); // значение для попапа с картинкой
@@ -87,10 +86,10 @@ function App() {
 
   function handleLogin(evt) {
     evt.preventDefault();
-    history.push('/');
     setUserAuthInfo({ ...userAuthInfo, link: '/sign-in' });
     setLoggedIn(true);
     setLoading(true);
+    return history.push('/');
   }
 
   function start(string) {
@@ -374,10 +373,6 @@ function App() {
 
   return (
     <React.Fragment>
-    {loggedIn
-      ? <Redirect to='/' />
-      : <Redirect to='/sign-in' />
-    }
       <Page>
         <CurrentUserContext.Provider value={currentUser}>
           <ErrorBoundary>
