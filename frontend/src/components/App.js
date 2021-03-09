@@ -7,6 +7,7 @@ import {
 import api from '../utils/api';
 import Main from './Main';
 import Login from './Login';
+import NotFound from './NotFound/NotFound';
 import Header from './Header';
 import Footer from './Footer';
 import Loader from './Loader/Loader';
@@ -469,6 +470,7 @@ function App() {
                   onRegister={onRegister}
                 />
               </Route>
+              <Route path='*' component={NotFound} />
             </Switch>
             {loggedIn && <Footer />}
           </ErrorBoundary>
