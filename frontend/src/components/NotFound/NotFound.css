@@ -33,9 +33,10 @@
   font-size: 14px;
   line-height: 1.21;
   font-weight: normal;
-  width: 42px;
+  min-width: 42px;
   color: #fff;
   margin-top: 100px;
+  margin-bottom: auto;
 }
 .NotFound__goBack:hover {
   cursor: pointer;
