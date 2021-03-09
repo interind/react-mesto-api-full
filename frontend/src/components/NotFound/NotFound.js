@@ -9,7 +9,7 @@ function NotFound() {
     <div className='NotFound'>
     <h2 className='NotFound__title'>404</h2>
     <p className='NotFound__subtitle'>Страница не найдена</p>
-    <button className='NotFound__goBack' type='button' title='Назад' onClick={history.goBack}>
+    <button className='NotFound__goBack' type='button' title='Назад' onClick={history.push('/')}>
       Назад
     </button>
     </div>
