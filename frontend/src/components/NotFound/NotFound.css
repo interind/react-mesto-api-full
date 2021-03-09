@@ -37,3 +37,7 @@
   color: #fff;
   margin-top: auto;
 }
+.NotFound__goBack:hover {
+  cursor: pointer;
+  opacity: .5;
+}
