@@ -95,11 +95,12 @@ function App() {
 
   function start(string) {
     api.token = localStorage.getItem(string);
+    setLoading(true);
     Promise.all([api.getInfoForUser(), api.getInfoForCards()])
       .then(([dataUser, dataCards]) => {
         if (!(dataUser && dataCards) || (dataUser.error && dataCards.error)) {
           setError({ ...statusError, message: 'ошибка данных' });
-          return Promise.reject(new Error('ошибка данных'));
+          Promise.reject(new Error('ошибка данных'));
         }
         setCurrentUser({ ...dataUser });
         setCards([...dataCards]);
@@ -108,13 +109,14 @@ function App() {
           link: '/sign-in',
         });
         setError(null);
-        return setIsOk(true);
+        setIsOk(true);
+        setLoggedIn(true);
       })
       .catch((err) => {
         console.error('Информация сервера с ошибкой', err.message);
         setError(err);
         setIsOk(false);
-        localStorage.removeItem('jwt');
+        localStorage.removeItem('token');
         setLoggedIn(false);
       })
       .finally(() => {
@@ -131,9 +133,9 @@ function App() {
       .then((data) => {
         setButtonLoading(false);
         if (data.token) {
-          localStorage.setItem('jwt', data.token);
+          localStorage.setItem('token', data.token);
           handleLogin(evt);
-          start('jwt');
+          start('token');
           setOpenCheck(false);
           infoMessage('Добро пожаловать на проект Mesto', true);
         } else if (!data.token && data.message) {
@@ -184,8 +186,8 @@ function App() {
 
   function signOut(evt) {
     if (evt.target.text === 'Выйти') {
-      if (localStorage.getItem('jwt')) {
-        localStorage.removeItem('jwt');
+      if (localStorage.getItem('token')) {
+        localStorage.removeItem('token');
         localStorage.removeItem('email');
         setCurrentUser({
           name: '',
@@ -353,24 +355,15 @@ function App() {
   }
 
   React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      setLoading(true);
-      setLoggedIn(true);
-      start('jwt');
+    console.log(loggedIn);
+    if (localStorage.getItem('token')) {
+      start('token');
+      history.push('/');
     } else {
+      setLoggedIn(false);
       localStorage.clear();
     }
-  }, []);
-
-  React.useLayoutEffect(() => {
-    if (history.location.pathname === '/sign-in') {
-      document.title = 'Авторизация';
-    } else if (history.location.pathname === '/sign-up') {
-      document.title = 'Регистрация';
-    } else if (history.location.pathname === '/') {
-      document.title = 'Mesto';
-    }
-  });
+  }, [loggedIn]);
 
   return (
     <React.Fragment>
@@ -397,82 +390,80 @@ function App() {
               onClose={closeAllPopups}
               toggleEventListenerWindow={toggleEventListenerWindow}
             />
+            {loading && <Loader />}
             <Switch>
-              <ProtectedRoute exact path='/' loggedIn={loggedIn}>
-              {loading && <Loader />}
-                <React.Fragment>
-                  <Main
-                    cards={cards}
-                    handleCardLike={handleCardLike}
-                    onAddPlace={handleAddPlaceClick}
-                    handleCardClick={handleCardClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onEditProfile={handleEditProfileClick}
-                    handleCardDelete={handleConfirmDeleteClick}
-                  />
-                  <AddPlacePopup
-                    isOpen={isAddPlacePopupOpen}
-                    isLoadingButton={buttonLoading}
-                    onClose={closeAllPopups}
-                    onAddPlace={handleAddPlace}
-                    toggleEventListenerWindow={toggleEventListenerWindow}
-                  />
-                  <EditAvatarPopup
-                    isOpen={isEditAvatarPopupOpen}
-                    isLoadingButton={buttonLoading}
-                    onClose={closeAllPopups}
-                    onUpdateAvatar={handleUpdateAvatar}
-                    toggleEventListenerWindow={toggleEventListenerWindow}
-                  />
-                  <EditProfilePopup
-                    isOpen={isEditProfilePopupOpen}
-                    isLoadingButton={buttonLoading}
-                    onClose={closeAllPopups}
-                    onUpdateUser={handleUpdateUser}
-                    toggleEventListenerWindow={toggleEventListenerWindow}
-                  />
-                  <DeleteCardPopup
-                    isCard={isCard}
-                    isLoadingButton={buttonLoading}
-                    isOpen={isConfirmDeletePopupOpen}
-                    onClose={closeAllPopups}
-                    onDeleteCard={handleCardDelete}
-                    toggleEventListenerWindow={toggleEventListenerWindow}
-                  />
-                  <ImagePopup
-                    isOpen={isOpenCard}
-                    selectedCard={selectedCard}
-                    onClose={closeAllPopups}
-                    toggleEventListenerWindow={toggleEventListenerWindow}
-                  />
-                </React.Fragment>
-              {!statusOk && (
-              <div className='page__elements'>
-                <ErrorPage error={statusError} message={'попробуйте позже'} />
-              </div>
-              )}
+              <ProtectedRoute
+                exact path='/'
+                loggedIn={loggedIn}>
+                <Main
+                  cards={cards}
+                  handleCardLike={handleCardLike}
+                  onAddPlace={handleAddPlaceClick}
+                  handleCardClick={handleCardClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  handleCardDelete={handleConfirmDeleteClick}
+                />
               </ProtectedRoute>
-              {!loading && (
-                <Route path='/sign-in' exact>
-                  <Login
-                    isOpen={isOpenCheck}
-                    isLoadingButton={buttonLoading}
-                    onLogin={onLogin}
-                    handleLogin={handleLogin}
-                  />
-                </Route>
-              )}
+              <Route path='/sign-in' exact>
+                <Login
+                  isOpen={isOpenCheck}
+                  isLoadingButton={buttonLoading}
+                  onLogin={onLogin}
+                  handleLogin={handleLogin}
+                />
+              </Route>
               <Route path='/sign-up' exact>
-                <Register
+              <Register
                   isOpen={isOpenCheck}
                   isLoadingButton={buttonLoading}
                   signOut={signOut}
                   onRegister={onRegister}
                 />
               </Route>
-              <Route path='*' component={NotFound} />
+              <Route path='*' exact component={NotFound} />
             </Switch>
+            <AddPlacePopup
+                isOpen={isAddPlacePopupOpen}
+                isLoadingButton={buttonLoading}
+                onClose={closeAllPopups}
+                onAddPlace={handleAddPlace}
+                toggleEventListenerWindow={toggleEventListenerWindow}
+              />
+              <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen}
+                isLoadingButton={buttonLoading}
+                onClose={closeAllPopups}
+                onUpdateAvatar={handleUpdateAvatar}
+                toggleEventListenerWindow={toggleEventListenerWindow}
+              />
+              <EditProfilePopup
+                isOpen={isEditProfilePopupOpen}
+                isLoadingButton={buttonLoading}
+                onClose={closeAllPopups}
+                onUpdateUser={handleUpdateUser}
+                toggleEventListenerWindow={toggleEventListenerWindow}
+              />
+              <DeleteCardPopup
+                isCard={isCard}
+                isLoadingButton={buttonLoading}
+                isOpen={isConfirmDeletePopupOpen}
+                onClose={closeAllPopups}
+                onDeleteCard={handleCardDelete}
+                toggleEventListenerWindow={toggleEventListenerWindow}
+              />
+              <ImagePopup
+                isOpen={isOpenCard}
+                selectedCard={selectedCard}
+                onClose={closeAllPopups}
+                toggleEventListenerWindow={toggleEventListenerWindow}
+              />
             {loggedIn && <Footer />}
+            {!statusOk && (
+              <div className='page__elements'>
+                <ErrorPage error={statusError} message={'попробуйте позже'} />
+              </div>
+            )}
           </ErrorBoundary>
         </CurrentUserContext.Provider>
       </Page>
