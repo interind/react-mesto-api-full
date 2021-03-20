@@ -355,10 +355,8 @@ function App() {
   }
 
   React.useEffect(() => {
-    console.log(loggedIn);
     if (localStorage.getItem('token')) {
       start('token');
-      history.push('/');
     } else {
       setLoggedIn(false);
       localStorage.clear();
@@ -407,6 +405,7 @@ function App() {
               </ProtectedRoute>
               <Route path='/sign-in' exact>
                 <Login
+                  loggedIn={loggedIn}
                   isOpen={isOpenCheck}
                   isLoadingButton={buttonLoading}
                   onLogin={onLogin}
@@ -414,50 +413,51 @@ function App() {
                 />
               </Route>
               <Route path='/sign-up' exact>
-              <Register
+                <Register
+                  loggedIn={loggedIn}
                   isOpen={isOpenCheck}
                   isLoadingButton={buttonLoading}
                   signOut={signOut}
                   onRegister={onRegister}
-                />
+                  />
               </Route>
-              <Route path='*' exact component={NotFound} />
+              <Route path='*' component={NotFound} />
             </Switch>
             <AddPlacePopup
-                isOpen={isAddPlacePopupOpen}
-                isLoadingButton={buttonLoading}
-                onClose={closeAllPopups}
-                onAddPlace={handleAddPlace}
-                toggleEventListenerWindow={toggleEventListenerWindow}
-              />
-              <EditAvatarPopup
-                isOpen={isEditAvatarPopupOpen}
-                isLoadingButton={buttonLoading}
-                onClose={closeAllPopups}
-                onUpdateAvatar={handleUpdateAvatar}
-                toggleEventListenerWindow={toggleEventListenerWindow}
-              />
-              <EditProfilePopup
-                isOpen={isEditProfilePopupOpen}
-                isLoadingButton={buttonLoading}
-                onClose={closeAllPopups}
-                onUpdateUser={handleUpdateUser}
-                toggleEventListenerWindow={toggleEventListenerWindow}
-              />
-              <DeleteCardPopup
-                isCard={isCard}
-                isLoadingButton={buttonLoading}
-                isOpen={isConfirmDeletePopupOpen}
-                onClose={closeAllPopups}
-                onDeleteCard={handleCardDelete}
-                toggleEventListenerWindow={toggleEventListenerWindow}
-              />
-              <ImagePopup
-                isOpen={isOpenCard}
-                selectedCard={selectedCard}
-                onClose={closeAllPopups}
-                toggleEventListenerWindow={toggleEventListenerWindow}
-              />
+              isOpen={isAddPlacePopupOpen}
+              isLoadingButton={buttonLoading}
+              onClose={closeAllPopups}
+              onAddPlace={handleAddPlace}
+              toggleEventListenerWindow={toggleEventListenerWindow}
+            />
+            <EditAvatarPopup
+              isOpen={isEditAvatarPopupOpen}
+              isLoadingButton={buttonLoading}
+              onClose={closeAllPopups}
+              onUpdateAvatar={handleUpdateAvatar}
+              toggleEventListenerWindow={toggleEventListenerWindow}
+            />
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              isLoadingButton={buttonLoading}
+              onClose={closeAllPopups}
+              onUpdateUser={handleUpdateUser}
+              toggleEventListenerWindow={toggleEventListenerWindow}
+            />
+            <DeleteCardPopup
+              isCard={isCard}
+              isLoadingButton={buttonLoading}
+              isOpen={isConfirmDeletePopupOpen}
+              onClose={closeAllPopups}
+              onDeleteCard={handleCardDelete}
+              toggleEventListenerWindow={toggleEventListenerWindow}
+            />
+            <ImagePopup
+              isOpen={isOpenCard}
+              selectedCard={selectedCard}
+              onClose={closeAllPopups}
+              toggleEventListenerWindow={toggleEventListenerWindow}
+            />
             {loggedIn && <Footer />}
             {!statusOk && (
               <div className='page__elements'>

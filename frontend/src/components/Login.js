@@ -1,14 +1,19 @@
 import React from 'react';
+import {
+  useHistory,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
 
 function Login({
   isOpen,
+  loggedIn,
   onLogin,
   signOut,
   isLoadingButton,
 }) {
+  const history = useHistory();
   const localEmail = localStorage.getItem('email') ? localStorage.getItem('email') : '';
   const [activeButton, setActiveButton] = React.useState(true);
   const [emailAndPassword, setEmailAndPassword] = React.useState({
@@ -54,6 +59,12 @@ function Login({
     onLogin(evt, emailAndPassword);
   }
 
+  React.useEffect(() => {
+    if (loggedIn) {
+      history.push('/');
+    }
+  }, [history, loggedIn]);
+
   return (
     <React.Fragment>
       <div className='page__elements'>
@@ -80,8 +91,9 @@ function Login({
 }
 
 Login.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
+  loggedIn: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  isLoadingButton: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
   signOut: PropTypes.func,
 };

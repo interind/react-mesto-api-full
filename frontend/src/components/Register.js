@@ -1,14 +1,19 @@
 import React from 'react';
+import {
+  useHistory,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
 import MarkupForPopups from './MarkupForPopups';
 
 function Register({
   isOpen,
+  loggedIn,
   signOut,
   onRegister,
   isLoadingButton,
 }) {
+  const history = useHistory();
   const [register, setRegister] = React.useState({
     password: '',
     email: '',
@@ -58,6 +63,12 @@ function Register({
     clearInput();
     onRegister({ ...register });
   }
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      history.push('/');
+    }
+  }, [history, loggedIn]);
   return (
     <React.Fragment>
       <div className="page__elements">
@@ -92,8 +103,9 @@ function Register({
 }
 
 Register.propTypes = {
-  isOpen: PropTypes.bool,
-  isLoadingButton: PropTypes.bool,
+  loggedIn: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  isLoadingButton: PropTypes.bool.isRequired,
   signOut: PropTypes.func.isRequired,
   onRegister: PropTypes.func.isRequired,
 };
