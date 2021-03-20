@@ -167,8 +167,7 @@ export default {
     Login.propTypes = {
       password: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
-      editEmail: PropTypes.func.isRequired,
-      editPassword: PropTypes.func.isRequired,
+      setEditLogin: PropTypes.func.isRequired,
       validationCheck: PropTypes.func.isRequired,
       placeMessage: PropTypes.object.isRequired,
     };
@@ -184,8 +183,9 @@ export default {
           id='input-email'
           value={props.email}
           name='email'
-          onChange={props.editEmail}
+          onChange={props.setEditLogin}
           onInput={props.validationCheck}
+          onFocus={props.validationCheck}
           required
         />
         {props.email !== '' && (
@@ -207,8 +207,9 @@ export default {
           minLength='6'
           value={props.password}
           maxLength='30'
-          onChange={props.editPassword}
+          onChange={props.setEditLogin}
           onInput={props.validationCheck}
+          onFocus={props.validationCheck}
           autoComplete='off'
           required
         />

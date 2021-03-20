@@ -16,7 +16,7 @@ function Login({
   const history = useHistory();
   const localEmail = localStorage.getItem('email') ? localStorage.getItem('email') : '';
   const [activeButton, setActiveButton] = React.useState(true);
-  const [emailAndPassword, setEmailAndPassword] = React.useState({
+  const [login, setLogin] = React.useState({
     email: localEmail || '',
     password: '',
   });
@@ -38,25 +38,21 @@ function Login({
     return setValidCheck({ [evt.target.name]: '' });
   }
 
-  function setPasswordUser(evt) {
-    setEmailAndPassword({
-      ...emailAndPassword,
-      password: evt.target.value,
-    });
-    setActiveButton(!evt.target.value);
-  }
-
-  function setEmailUser(evt) {
-    setEmailAndPassword({ ...emailAndPassword, email: evt.target.value });
-    setActiveButton(!evt.target.value);
+  function setEditLogin(evt) {
+    setLogin({ ...login, [evt.target.name]: evt.target.value });
+    if (Array.from(evt.target.form).some((e) => e.validationMessage)) {
+      setActiveButton(true);
+    } else {
+      setActiveButton(false);
+    }
   }
 
   function verifiesAuthorization(evt) {
     evt.preventDefault();
-    if (!emailAndPassword.password || !emailAndPassword.email) {
+    if (!login.password || !login.email) {
       return;
     }
-    onLogin(evt, emailAndPassword);
+    onLogin(evt, login);
   }
 
   React.useEffect(() => {
@@ -64,6 +60,12 @@ function Login({
       history.push('/');
     }
   }, [history, loggedIn]);
+  React.useEffect(() => {
+    if (!localStorage.getItem('email')) {
+      setLogin({ email: 'guest@pochta.ru', password: '123456' });
+      setActiveButton(false);
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -77,11 +79,10 @@ function Login({
           signOut={signOut}
           onSubmit={verifiesAuthorization}>
           <MarkupForPopups.Login
-            email={emailAndPassword.email}
-            password={emailAndPassword.password}
+            email={login.email}
+            password={login.password}
             placeMessage={validCheck}
-            editEmail={setEmailUser}
-            editPassword={setPasswordUser}
+            setEditLogin={setEditLogin}
             validationCheck={validationCheck}
           />
         </PopupWithForm>
