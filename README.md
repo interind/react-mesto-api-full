@@ -13,6 +13,6 @@ Express,
 Mongo.
 
 **Start project:**
-Frontend можно запустить через npm run start  осуществит сборку статики проекта.
+Frontend можно запустить через npm run start.
 
-Backend стартуем через npm run server запустит апи и подключит вас к базе mongodb если она у вас установлена.
+Backend стартуем через npm run server запустит апи и подключит вас к базе MongoDB если она у вас установлена.
