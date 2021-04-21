@@ -4,13 +4,13 @@
 Рабочее приложение для хранения картинок конкретного пользователя, со своим апи которое можно разместить на сервере.
 
 **Stack:**
-1.HTML,
-2.CSS,
-3.JavaScript,
-4.React,
-5.Node,
-6.Express,
-7.Mongo.
+HTML,
+CSS,
+JavaScript,
+React,
+Node,
+Express,
+Mongo.
 
 **Start project:**
 Frontend можно запустить через npm run start  осуществит сборку статики проекта.
