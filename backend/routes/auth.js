@@ -5,7 +5,7 @@ const { regHttp, regProfile } = require('../utils/reg.ext');
 const {
   login,
   createUser,
-} = require('../controllers/users.js');
+} = require('../controllers/users');
 
 router.post(
   '/signup',

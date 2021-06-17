@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
 const config = require('config');
 const isEmail = require('validator/lib/isEmail');
-const { regHttp } = require('../utils/reg.ext.js');
+const { regHttp } = require('../utils/reg.ext');
 
 const userSchema = new mongoose.Schema({
   name: {

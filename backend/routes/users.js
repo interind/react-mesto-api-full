@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { regHttp, regProfile } = require('../utils/reg.ext');
-const auth = require('../middlewares/auth.js');
+const auth = require('../middlewares/auth');
 const {
   getUser,
   getUsers,
   getUserId,
   updateUser,
   updateUserAvatar,
-} = require('../controllers/users.js');
+} = require('../controllers/users');
 
 router.get('/users', auth, getUsers);
 router.get('/users/me', auth, getUser);

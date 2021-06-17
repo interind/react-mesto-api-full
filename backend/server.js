@@ -1,8 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const config = require('config');
-const app = require('./app.js');
-const { errorConsoleLogger } = require('./middlewares/logger.js');
+const app = require('./app');
+const { errorConsoleLogger } = require('./middlewares/logger');
 
 const PORT = process.env.PORT || config.get('PORT');
 const BASE_PATH = `Port:${PORT}`;

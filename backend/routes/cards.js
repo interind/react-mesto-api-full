@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { regHttp, regProfile } = require('../utils/reg.ext');
-const auth = require('../middlewares/auth.js');
+const auth = require('../middlewares/auth');
 const {
   getCards,
   createCard,
   deleteCard,
   likeCard,
   dislikeCard,
-} = require('../controllers/cards.js');
+} = require('../controllers/cards');
 
 router.get('/cards', auth, getCards);
 router.post('/cards',

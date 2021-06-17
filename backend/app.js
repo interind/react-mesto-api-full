@@ -3,12 +3,12 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
-const { requestLogger, errorLogger } = require('./middlewares/logger.js');
-const { errorsResponse } = require('./middlewares/errors.js');
-const routerAuth = require('./routes/auth.js');
-const routerUsers = require('./routes/users.js');
-const routerCards = require('./routes/cards.js');
-const routerError = require('./routes/error.js');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { errorsResponse } = require('./middlewares/errors');
+const routerAuth = require('./routes/auth');
+const routerUsers = require('./routes/users');
+const routerCards = require('./routes/cards');
+const routerError = require('./routes/error');
 
 const app = express();
 app.disable('x-powered-by');
