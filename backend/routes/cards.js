@@ -1,6 +1,7 @@
 const router = require('express').Router();
+const validator = require('validator');
 const { celebrate, Joi } = require('celebrate');
-const { regHttp, regProfile } = require('../utils/reg.ext');
+const { regProfile } = require('../utils/reg.ext');
 const auth = require('../middlewares/auth');
 const {
   getCards,
@@ -17,7 +18,12 @@ router.post('/cards',
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30).regex(regProfile)
         .required(),
-      link: Joi.string().regex(regHttp).required(),
+      link: Joi.string().required().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value;
+        }
+        return helpers.message('Ссылка не проходит');
+      }),
     }),
   }), createCard);
 router.delete('/cards/:cardId',

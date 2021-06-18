@@ -1,5 +1,4 @@
 {
-  "mongodbUrl": "mongodb://localhost:27017/mestodb",
   "secretKey": "hello world",
   "avatar": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
   "userName": "Жак-Ив Кусто",
