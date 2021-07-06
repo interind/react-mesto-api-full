@@ -2,7 +2,7 @@ const createError = require('http-errors');
 const Card = require('../models/card');
 
 module.exports.getCards = (req, res, next) => {
-  Card.find({})
+  Card.find({}).select('-__v')
     .then((cards) => res.send(cards.reverse()))
     .catch(next);
 };
@@ -19,7 +19,9 @@ module.exports.createCard = (req, res, next) => {
     link,
     owner,
   })
-    .then((card) => res.send(card))
+    .then((card) => {
+      res.send(card);
+    })
     .catch(next);
 };
 

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { regHttp, regProfile } = require('../utils/reg.ext');
+const validator = require('validator');
+const { regProfile } = require('../utils/reg.ext');
 const auth = require('../middlewares/auth');
 const {
   getUser,
@@ -34,7 +35,11 @@ router.patch('/users/me/avatar',
   auth,
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().regex(regHttp).required(),
+      avatar: Joi.string().required().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value;
+        } return helpers.message('ошибка валидности ссылки на аватар');
+      }),
     }),
   }), updateUserAvatar);
 
