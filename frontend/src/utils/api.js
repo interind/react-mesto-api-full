@@ -11,7 +11,6 @@ class Api {
     this._cards = cards;
     this.login = login;
     this.auth = auth;
-    this.token = '';
   }
 
   _getResponse(res) {
@@ -47,9 +46,9 @@ class Api {
   getInfoForUser() {
     return fetch(`${this._url}${this._user}`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        Authorization: `Bearer ${this.token}`,
       },
     }).then(this._getResponse);
   }
@@ -57,8 +56,8 @@ class Api {
   getInfoForCards() {
     return fetch(`${this._url}${this._cards}`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(this._getResponse);
@@ -67,8 +66,8 @@ class Api {
   updateUserInfo({ name, about }) {
     return fetch(`${this._url}${this._user}`, {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
@@ -81,8 +80,8 @@ class Api {
   updateUserAvatar({ avatar }) {
     return fetch(`${this._url}${this._user}/avatar`, {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
@@ -94,8 +93,8 @@ class Api {
   addCard({ name, link }) {
     return fetch(`${this._url}${this._cards}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
@@ -109,9 +108,8 @@ class Api {
     const toggleMethod = isLike ? 'PUT' : 'DELETE';
     return fetch(`${this._url}${this._cards}/${infoId}/likes`, {
       method: toggleMethod,
-
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(this._getResponse);
@@ -120,8 +118,8 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._url}${this._cards}/${id}`, {
       method: 'DELETE',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${this.token}`,
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(this._getResponse);

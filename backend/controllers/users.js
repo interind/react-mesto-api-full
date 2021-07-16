@@ -17,7 +17,12 @@ module.exports.login = (req, res, next) => {
           expiresIn: '7d',
         },
       );
-      res.send({ token, _id: user._id });
+      res.cookie('jwt', token, {
+        maxAge: 3600000,
+        httpOnly: true,
+        sameSite: true,
+      });
+      res.send({ email, _id: user._id });
     })
     .catch(next);
 };

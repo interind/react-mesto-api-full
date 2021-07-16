@@ -93,8 +93,7 @@ function App() {
     return history.push('/');
   }
 
-  function start(string) {
-    api.token = localStorage.getItem(string);
+  function start() {
     setLoading(true);
     Promise.all([api.getInfoForUser(), api.getInfoForCards()])
       .then(([dataUser, dataCards]) => {
@@ -116,7 +115,7 @@ function App() {
         console.error('Информация сервера с ошибкой', err.message);
         setError(err);
         setIsOk(false);
-        localStorage.removeItem('token');
+        localStorage.removeItem('email');
         setLoggedIn(false);
       })
       .finally(() => {
@@ -132,13 +131,14 @@ function App() {
       })
       .then((data) => {
         setButtonLoading(false);
-        if (data.token) {
-          localStorage.setItem('token', data.token);
+        if (data.email) {
+          console.log(data);
+          localStorage.setItem('email', data.email);
           handleLogin(evt);
-          start('token');
+          start();
           setOpenCheck(false);
           infoMessage('Добро пожаловать на проект Mesto', true);
-        } else if (!data.token && data.message) {
+        } else if (data.message) {
           infoMessage(data.message, false);
         }
       })
@@ -186,8 +186,7 @@ function App() {
 
   function signOut(evt) {
     if (evt.target.text === 'Выйти') {
-      if (localStorage.getItem('token')) {
-        localStorage.removeItem('token');
+      if (localStorage.getItem('email')) {
         localStorage.removeItem('email');
         setCurrentUser({
           name: '',
@@ -355,8 +354,8 @@ function App() {
   }
 
   React.useEffect(() => {
-    if (localStorage.getItem('token')) {
-      start('token');
+    if (localStorage.getItem('email')) {
+      start();
     } else {
       setLoggedIn(false);
       localStorage.clear();
