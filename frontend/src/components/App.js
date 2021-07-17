@@ -132,7 +132,6 @@ function App() {
       .then((data) => {
         setButtonLoading(false);
         if (data.email) {
-          console.log(data);
           localStorage.setItem('email', data.email);
           handleLogin(evt);
           start();

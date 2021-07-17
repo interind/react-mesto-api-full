@@ -8,6 +8,9 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
+    if (!token) {
+      next(createError.Unauthorized(config.get('errorToken')));
+    }
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : config.get('secretKey'));
   } catch (err) {
     next(createError.Unauthorized(err.message));
