@@ -133,6 +133,7 @@ function App() {
         setButtonLoading(false);
         if (data.email) {
           localStorage.setItem('email', data.email);
+          localStorage.setItem('status', 'true');
           handleLogin(evt);
           start();
           setOpenCheck(false);
@@ -187,6 +188,7 @@ function App() {
     if (evt.target.text === 'Выйти') {
       if (localStorage.getItem('email')) {
         localStorage.removeItem('email');
+        localStorage.removeItem('status');
         setCurrentUser({
           name: '',
           about: '',
@@ -353,7 +355,7 @@ function App() {
   }
 
   React.useEffect(() => {
-    if (localStorage.getItem('email')) {
+    if (localStorage.getItem('status')) {
       start();
     } else {
       setLoggedIn(false);
